@@ -11,12 +11,12 @@ RUN apt-get update && apt-get install -y \
 # Copy custom addons
 COPY ./addons /mnt/extra-addons/
 
-# Copy configuration
-COPY ./config/odoo.conf /etc/odoo/
+# Copy startup script
+COPY ./start.sh /usr/local/bin/start.sh
 
 # Set proper permissions
 RUN chown -R odoo:odoo /mnt/extra-addons/
-RUN chown -R odoo:odoo /etc/odoo/
+RUN chmod +x /usr/local/bin/start.sh
 
 # Switch back to odoo user
 USER odoo
@@ -24,5 +24,5 @@ USER odoo
 # Expose port
 EXPOSE 8069
 
-# Run Odoo
-CMD ["odoo"]
+# Run startup script
+CMD ["/usr/local/bin/start.sh"]
