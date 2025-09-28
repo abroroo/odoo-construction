@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Construction Material Form View -->
+    <record id="view_construction_material_form" model="ir.ui.view">
+        <field name="name">construction.material.form</field>
+        <field name="model">construction.material</field>
+        <field name="arch" type="xml">
+            <form string="Construction Material">
+                <header>
+                    <button name="action_view_stock" string="View Stock" type="object" class="btn-primary"/>
+                    <button name="action_quick_receive" string="Quick Receive" type="object" class="btn-secondary"/>
+                    <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1" placeholder="Material name..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Basic Information">
+                            <field name="category" required="1"/>
+                            <field name="unit_of_measure" required="1"/>
+                            <field name="grade_quality"/>
+                        </group>
+                        <group string="Physical Properties">
+                            <field name="weight_per_unit"/>
+                            <field name="volume_per_unit"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Supplier Information">
+                            <field name="standard_cost"/>
+                            <field name="preferred_supplier_id"/>
+                        </group>
+                        <group string="Stock Summary">
+                            <field name="total_stock_quantity" readonly="1"/>
+                            <field name="total_stock_value" readonly="1"/>
+                            <field name="warehouse_count" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Options">
+                            <field name="frequently_used"/>
+                            <field name="hazardous"/>
+                            <field name="shelf_life_days"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Material description..."/>
+                        </page>
+                        <page string="Specifications">
+                            <field name="specifications" placeholder="Technical specifications..."/>
+                        </page>
+                        <page string="Storage Requirements">
+                            <field name="storage_requirements" placeholder="Special storage requirements..."/>
+                        </page>
+                        <page string="Current Stock">
+                            <field name="stock_ids" readonly="1">
+                                <tree string="Stock by Warehouse">
+                                    <field name="warehouse_id"/>
+                                    <field name="quantity"/>
+                                    <field name="available_quantity"/>
+                                    <field name="stock_status"/>
+                                    <field name="storage_location"/>
+                                    <field name="total_value"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Construction Material Tree View -->
+    <record id="view_construction_material_tree" model="ir.ui.view">
+        <field name="name">construction.material.tree</field>
+        <field name="model">construction.material</field>
+        <field name="arch" type="xml">
+            <tree string="Construction Materials" decoration-info="frequently_used == True">
+                <field name="name"/>
+                <field name="category"/>
+                <field name="unit_of_measure"/>
+                <field name="grade_quality"/>
+                <field name="frequently_used" widget="boolean_toggle"/>
+                <field name="total_stock_quantity"/>
+                <field name="warehouse_count"/>
+                <field name="standard_cost"/>
+                <field name="active" widget="boolean_toggle"/>
+                <button name="action_view_stock" type="object" icon="fa-cubes" title="View Stock"/>
+                <button name="action_quick_receive" type="object" icon="fa-plus" title="Quick Receive"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_construction_material_search" model="ir.ui.view">
+        <field name="name">construction.material.search</field>
+        <field name="model">construction.material</field>
+        <field name="arch" type="xml">
+            <search string="Search Materials">
+                <field name="name" string="Material" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="category" string="Category"/>
+                <field name="specifications" string="Specifications"/>
+
+                <filter string="Frequently Used" name="filter_frequent" domain="[('frequently_used', '=', True)]"/>
+                <filter string="Hazardous" name="filter_hazardous" domain="[('hazardous', '=', True)]"/>
+                <filter string="Active" name="filter_active" domain="[('active', '=', True)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Category" name="group_category" context="{'group_by': 'category'}"/>
+                    <filter string="Unit of Measure" name="group_unit" context="{'group_by': 'unit_of_measure'}"/>
+                    <filter string="Frequently Used" name="group_frequent" context="{'group_by': 'frequently_used'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_construction_materials" model="ir.actions.act_window">
+        <field name="name">Construction Materials</field>
+        <field name="res_model">construction.material</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first construction material!
+            </p>
+            <p>
+                Define the types of materials used in construction projects.
+                Common materials will be pre-loaded for you.
+            </p>
+        </field>
+    </record>
+</odoo>

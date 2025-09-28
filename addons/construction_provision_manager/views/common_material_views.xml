@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Common Materials Template Tree View -->
+    <record id="view_common_material_tree" model="ir.ui.view">
+        <field name="name">common.material.tree</field>
+        <field name="model">construction.common.material</field>
+        <field name="arch" type="xml">
+            <tree string="Common Materials" decoration-info="is_frequently_used == True">
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="default_unit"/>
+                <field name="average_price"/>
+                <field name="is_frequently_used" widget="boolean_toggle"/>
+                <field name="description"/>
+                <button name="action_quick_add_to_project" type="object" icon="fa-plus" title="Quick Add to Project"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Common Materials Kanban View -->
+    <record id="view_common_material_kanban" model="ir.ui.view">
+        <field name="name">common.material.kanban</field>
+        <field name="model">construction.common.material</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="default_unit"/>
+                <field name="average_price"/>
+                <field name="is_frequently_used"/>
+                <field name="description"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click" t-att-class="record.is_frequently_used.raw_value ? 'border-info' : ''">
+                            <div class="o_kanban_record_top mb8">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <t t-esc="record.name.value"/>
+                                        <i t-if="record.is_frequently_used.raw_value" class="fa fa-star text-warning ml4" title="Frequently Used"/>
+                                    </strong>
+                                    <br/>
+                                    <span class="badge badge-secondary">
+                                        <t t-esc="record.category_id.value"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="row mb4">
+                                    <div class="col-6">
+                                        <strong>Unit:</strong>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <t t-esc="record.default_unit.value"/>
+                                    </div>
+                                </div>
+                                <div class="row mb4">
+                                    <div class="col-6">
+                                        <strong>Avg Price:</strong>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <strong>$<t t-esc="record.average_price.value"/></strong>
+                                    </div>
+                                </div>
+                                <div class="text-muted" t-if="record.description.value">
+                                    <t t-esc="record.description.value"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom mt8">
+                                <div class="oe_kanban_bottom_right">
+                                    <button name="action_quick_add_to_project" type="object" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-plus"/> Quick Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Common Materials Form View -->
+    <record id="view_common_material_form" model="ir.ui.view">
+        <field name="name">common.material.form</field>
+        <field name="model">construction.common.material</field>
+        <field name="arch" type="xml">
+            <form string="Common Material Template">
+                <header>
+                    <button name="action_quick_add_to_project" string="Quick Add to Project" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1" placeholder="Material name..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Basic Information">
+                            <field name="category_id" required="1"/>
+                            <field name="default_unit" required="1"/>
+                            <field name="average_price"/>
+                        </group>
+                        <group string="Options">
+                            <field name="is_frequently_used"/>
+                        </group>
+                    </group>
+
+                    <group string="Description">
+                        <field name="description" nolabel="1" placeholder="Describe this material..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_common_material_search" model="ir.ui.view">
+        <field name="name">common.material.search</field>
+        <field name="model">construction.common.material</field>
+        <field name="arch" type="xml">
+            <search string="Search Common Materials">
+                <field name="name" string="Material" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="category_id" string="Category"/>
+                <field name="description" string="Description"/>
+
+                <filter string="Frequently Used" name="filter_frequent" domain="[('is_frequently_used', '=', True)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>
+                    <filter string="Frequently Used" name="group_frequent" context="{'group_by': 'is_frequently_used'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_common_materials" model="ir.actions.act_window">
+        <field name="name">Material Templates</field>
+        <field name="res_model">construction.common.material</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_filter_frequent': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first material template!
+            </p>
+            <p>
+                Common materials help you quickly add frequently used items to projects
+                with pre-defined units and average pricing.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,254 @@
+/* Construction Provision Manager Mobile-First CSS */
+
+/* Mobile-First Material Entry Form */
+@media (max-width: 767px) {
+    /* Form Layout */
+    .o_form_view .o_form_sheet {
+        padding: 10px !important;
+    }
+
+    /* Large input fields for mobile */
+    .o_field_widget input[type="text"],
+    .o_field_widget input[type="number"],
+    .o_field_widget textarea,
+    .o_field_widget select {
+        min-height: 48px !important;
+        font-size: 16px !important;
+        padding: 12px !important;
+        border-radius: 8px !important;
+        border: 2px solid #dee2e6 !important;
+    }
+
+    /* Focus states for better UX */
+    .o_field_widget input:focus,
+    .o_field_widget textarea:focus,
+    .o_field_widget select:focus {
+        border-color: #0064FF !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 100, 255, 0.25) !important;
+        outline: none !important;
+    }
+
+    /* Form groups spacing */
+    .o_group .o_td_label {
+        padding: 8px 0 !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+    }
+
+    .o_group .o_field_widget {
+        padding: 4px 0 !important;
+    }
+
+    /* Material templates grid */
+    .material-template-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    .material-template-btn {
+        padding: 15px !important;
+        min-height: 60px !important;
+        border-radius: 12px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        background: #f8f9fa !important;
+        border: 2px solid #dee2e6 !important;
+        color: #495057 !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .material-template-btn:hover,
+    .material-template-btn:focus {
+        background: #0064FF !important;
+        color: white !important;
+        border-color: #0064FF !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(0, 100, 255, 0.3) !important;
+    }
+
+    /* Quick quantity buttons */
+    .quantity-quick-btns {
+        display: flex;
+        gap: 8px;
+        margin: 10px 0;
+        flex-wrap: wrap;
+    }
+
+    .qty-btn {
+        flex: 1;
+        min-width: 60px;
+        height: 40px !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        background: #e9ecef !important;
+        border: 1px solid #ced4da !important;
+        color: #495057 !important;
+    }
+
+    .qty-btn:hover {
+        background: #0064FF !important;
+        color: white !important;
+        border-color: #0064FF !important;
+    }
+
+    /* Form buttons */
+    .o_form_button_save,
+    .btn-primary {
+        min-height: 50px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        border-radius: 12px !important;
+        background: #0064FF !important;
+        border-color: #0064FF !important;
+        padding: 12px 24px !important;
+    }
+
+    .btn-secondary {
+        min-height: 50px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        border-radius: 12px !important;
+        padding: 12px 24px !important;
+    }
+}
+
+/* Kanban view enhancements */
+.o_kanban_view.o_kanban_mobile .o_kanban_card {
+    margin-bottom: 12px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #e9ecef !important;
+    overflow: hidden !important;
+}
+
+.o_kanban_card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Status badges */
+.badge-success {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+.badge-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.badge-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.badge-info {
+    background-color: #17a2b8 !important;
+    color: white !important;
+}
+
+.badge-secondary {
+    background-color: #6c757d !important;
+    color: white !important;
+}
+
+/* List view improvements for mobile */
+@media (max-width: 767px) {
+    .o_list_view table {
+        font-size: 14px !important;
+    }
+
+    .o_list_view th,
+    .o_list_view td {
+        padding: 12px 8px !important;
+    }
+
+    /* Hide less important columns on mobile */
+    .o_list_view .o_list_optional {
+        display: none !important;
+    }
+}
+
+/* Material category colors */
+.category-construction { background-color: #8B4513 !important; }
+.category-tools { background-color: #FF8C00 !important; }
+.category-equipment { background-color: #DC143C !important; }
+.category-electrical { background-color: #FFD700 !important; color: #000 !important; }
+.category-plumbing { background-color: #1E90FF !important; }
+.category-safety { background-color: #32CD32 !important; }
+
+/* Material status indicators */
+.status-in-stock { border-left: 4px solid #28a745 !important; }
+.status-low-stock { border-left: 4px solid #ffc107 !important; }
+.status-out-of-stock { border-left: 4px solid #dc3545 !important; }
+
+/* Quick access panel */
+.quick-access-panel {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
+    border: 1px solid #e9ecef;
+}
+
+.quick-access-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Frequently used materials highlight */
+.frequently-used {
+    border: 2px solid #0064FF !important;
+    background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%) !important;
+}
+
+.frequently-used .badge {
+    background: #0064FF !important;
+    color: white !important;
+}
+
+/* Touch-friendly elements */
+@media (max-width: 767px) {
+    .btn, button {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+
+    .o_kanban_record_bottom .btn {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+        min-height: 36px !important;
+    }
+}
+
+/* Loading states */
+.material-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.material-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0064FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

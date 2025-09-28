@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Budget Report Template -->
+    <template id="budget_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="budget">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h2>Budget Report: <span t-field="budget.name"/></h2>
+                            </div>
+                        </div>
+
+                        <div class="row mb32">
+                            <div class="col-4">
+                                <strong>Project:</strong> <span t-field="budget.project_id.name"/>
+                            </div>
+                            <div class="col-4">
+                                <strong>Status:</strong> <span t-field="budget.state"/>
+                            </div>
+                            <div class="col-4">
+                                <strong>Date:</strong> <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                            </div>
+                        </div>
+
+                        <!-- Budget Summary -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>Budget Summary</h3>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Total Budget:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="budget.total_budget"
+                                                  t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Spent:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="budget.total_spent"
+                                                  t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Committed:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="budget.total_committed"
+                                                  t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td><strong>Remaining Budget:</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="budget.remaining_budget"
+                                                  t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Budget Utilization:</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'%.1f%%' % budget.budget_utilization"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Budget Lines -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>Budget Details</h3>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Description</th>
+                                            <th class="text-right">Qty</th>
+                                            <th class="text-right">Unit Price</th>
+                                            <th class="text-right">Budget</th>
+                                            <th class="text-right">Spent</th>
+                                            <th class="text-right">Committed</th>
+                                            <th class="text-right">Remaining</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="budget.budget_line_ids" t-as="line">
+                                            <tr>
+                                                <td><span t-field="line.category_id.name"/></td>
+                                                <td><span t-field="line.name"/></td>
+                                                <td class="text-right">
+                                                    <span t-esc="'%.2f' % line.quantity"/>
+                                                    <span t-field="line.uom_id.name"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.unit_price"
+                                                          t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.budget_amount"
+                                                          t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.spent_amount"
+                                                          t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.committed_amount"
+                                                          t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.remaining_amount"
+                                                          t-options="{'widget': 'monetary', 'display_currency': budget.project_id.company_id.currency_id}"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Budget Report Action -->
+    <record id="action_budget_report" model="ir.actions.report">
+        <field name="name">Budget Report</field>
+        <field name="model">construction.project.budget</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">construction_budget.budget_report_template</field>
+        <field name="report_file">construction_budget.budget_report_template</field>
+        <field name="print_report_name">'Budget Report - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_construction_project_budget"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

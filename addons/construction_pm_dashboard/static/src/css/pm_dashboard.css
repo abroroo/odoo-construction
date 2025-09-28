@@ -1,0 +1,704 @@
+/* PM Dashboard Specific Styles - Enhanced for Desktop with Custom Branding */
+
+/* Apply Onest font and improved styling for PM Dashboard */
+.o_pm_dashboard_kanban {
+    padding: 20px;
+    background-color: #F8F9FA;
+    min-height: 100vh;
+    font-family: 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.pm_dashboard_header {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.pm_project_selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pm_project_dropdown {
+    min-width: 250px;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.pm_refresh_btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pm_refresh_btn:hover {
+    background: #218838;
+}
+
+/* === Overview Cards === */
+.pm_overview_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.pm_overview_card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.pm_overview_card:hover {
+    transform: translateY(-2px);
+}
+
+.pm_card_header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.pm_card_title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pm_card_body {
+    padding: 1.5rem;
+}
+
+.pm_stat_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.pm_stat_label {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.pm_stat_value {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.pm_progress_bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.pm_progress_fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.pm_progress_success { background: #28a745; }
+.pm_progress_warning { background: #ffc107; }
+.pm_progress_danger { background: #dc3545; }
+.pm_progress_info { background: #17a2b8; }
+
+/* === Task Board === */
+.pm_task_board_container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.pm_board_header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.pm_board_filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.pm_filter_select {
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background: white;
+}
+
+.pm_task_board {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+    min-height: 400px;
+}
+
+.pm_board_column {
+    flex: 1;
+    min-width: 280px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.pm_column_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.pm_column_title {
+    font-weight: 600;
+    color: #495057;
+}
+
+.pm_task_count {
+    background: #6c757d;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.pm_task_list {
+    min-height: 200px;
+}
+
+.pm_task_card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: grab;
+    transition: all 0.2s;
+    border-left: 4px solid #dee2e6;
+}
+
+.pm_task_card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+
+.pm_task_card.dragging {
+    opacity: 0.5;
+    transform: rotate(2deg);
+}
+
+.pm_task_card.priority-high {
+    border-left-color: #dc3545;
+}
+
+.pm_task_card.priority-normal {
+    border-left-color: #28a745;
+}
+
+.pm_task_title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    line-height: 1.3;
+}
+
+.pm_task_meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.pm_task_assignees {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.pm_assignee_avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.pm_task_deadline {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.pm_task_deadline.overdue {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.pm_task_budget {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.pm_budget_bar {
+    height: 4px;
+    background: #e9ecef;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 0.25rem;
+}
+
+.pm_budget_fill {
+    height: 100%;
+    transition: width 0.3s;
+}
+
+.pm_budget_normal { background: #28a745; }
+.pm_budget_warning { background: #ffc107; }
+.pm_budget_over { background: #dc3545; }
+
+/* === Budget Monitor === */
+.pm_budget_container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.pm_budget_main {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+}
+
+.pm_budget_sidebar {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+}
+
+.pm_category_item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+}
+
+.pm_category_item:hover {
+    border-color: #007bff;
+}
+
+.pm_category_item.over-budget {
+    border-color: #dc3545;
+    background: #fff5f5;
+}
+
+.pm_category_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.pm_category_name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.pm_category_percentage {
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: white;
+}
+
+.pm_expense_list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.pm_expense_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+}
+
+.pm_expense_item:hover {
+    background: #f8f9fa;
+}
+
+.pm_expense_info {
+    flex: 1;
+}
+
+.pm_expense_name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.pm_expense_meta {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.pm_expense_amount {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.pm_approve_btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.pm_approve_btn:hover {
+    background: #218838;
+}
+
+/* === Team Overview === */
+.pm_team_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.pm_team_member {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+    text-align: center;
+}
+
+.pm_member_avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto 0.5rem;
+    display: block;
+}
+
+.pm_member_name {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.pm_member_stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.pm_member_stat {
+    text-align: center;
+}
+
+.pm_stat_number {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+.pm_stat_text {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* === Alerts === */
+.pm_alerts_container {
+    margin-bottom: 1.5rem;
+}
+
+.pm_alert {
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pm_alert.danger {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.pm_alert.warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+}
+
+.pm_alert.info {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+.pm_alert_icon {
+    font-size: 1.2rem;
+}
+
+.pm_alert_content {
+    flex: 1;
+}
+
+.pm_alert_title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+/* === Responsive Design === */
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .pm_dashboard_container {
+        padding: 0.5rem;
+    }
+
+    .pm_overview_grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .pm_budget_container {
+        grid-template-columns: 1fr;
+    }
+
+    .pm_board_header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pm_board_filters {
+        justify-content: center;
+    }
+
+    .pm_task_board {
+        padding: 1rem;
+    }
+
+    .pm_board_column {
+        min-width: 240px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .pm_dashboard_container {
+        padding: 0.25rem;
+    }
+
+    .pm_dashboard_header {
+        padding: 1rem;
+    }
+
+    .pm_project_selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pm_project_dropdown {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .pm_overview_grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .pm_overview_card {
+        border-radius: 8px;
+    }
+
+    .pm_card_header,
+    .pm_card_body {
+        padding: 1rem;
+    }
+
+    /* Mobile task board - vertical stacking */
+    .pm_task_board {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    .pm_board_column {
+        min-width: unset;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .pm_task_card {
+        margin-bottom: 0.75rem;
+    }
+
+    .pm_board_filters {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .pm_filter_select {
+        width: 100%;
+    }
+
+    /* Mobile team grid */
+    .pm_team_grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Mobile task meta */
+    .pm_task_meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .pm_task_assignees {
+        order: 1;
+    }
+
+    .pm_task_deadline {
+        order: 2;
+    }
+
+    /* Mobile budget layout */
+    .pm_category_header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .pm_expense_item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .pm_expense_meta {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+    .pm_dashboard_header {
+        padding: 0.75rem;
+    }
+
+    .pm_card_header,
+    .pm_card_body {
+        padding: 0.75rem;
+    }
+
+    .pm_stat_row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .pm_task_title {
+        font-size: 0.9rem;
+    }
+
+    .pm_assignee_avatar {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Loading states */
+.pm_loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.pm_loading i {
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .pm_dashboard_container {
+        background: #1a1a1a;
+        color: #e9ecef;
+    }
+
+    .pm_overview_card,
+    .pm_task_board_container,
+    .pm_budget_main,
+    .pm_budget_sidebar,
+    .pm_team_member {
+        background: #2d3748;
+        color: #e9ecef;
+    }
+
+    .pm_board_column {
+        background: #374151;
+    }
+
+    .pm_task_card {
+        background: #4a5568;
+        color: #e9ecef;
+    }
+
+    .pm_category_item {
+        border-color: #4a5568;
+    }
+
+    .pm_category_item:hover {
+        border-color: #63b3ed;
+    }
+}

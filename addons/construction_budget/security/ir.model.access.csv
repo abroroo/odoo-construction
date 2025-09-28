@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_construction_budget_category_user,construction.budget.category.user,model_construction_budget_category,base.group_user,1,1,1,0
+access_construction_budget_category_manager,construction.budget.category.manager,model_construction_budget_category,project.group_project_manager,1,1,1,1
+access_construction_project_budget_user,construction.project.budget.user,model_construction_project_budget,base.group_user,1,1,1,0
+access_construction_project_budget_manager,construction.project.budget.manager,model_construction_project_budget,project.group_project_manager,1,1,1,1
+access_construction_project_budget_line_user,construction.project.budget.line.user,model_construction_project_budget_line,base.group_user,1,1,1,0
+access_construction_project_budget_line_manager,construction.project.budget.line.manager,model_construction_project_budget_line,project.group_project_manager,1,1,1,1

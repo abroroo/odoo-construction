@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- PM Dashboard Action -->
+    <record id="action_pm_dashboard" model="ir.actions.act_window">
+        <field name="name">Project Manager Dashboard</field>
+        <field name="res_model">construction.pm.dashboard</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Welcome to Project Manager Dashboard!
+            </p>
+            <p>
+                Get comprehensive project insights with task progress, budget monitoring, and team overview.
+            </p>
+        </field>
+    </record>
+
+    <!-- PM Dashboard Tree View -->
+    <record id="view_pm_dashboard_tree" model="ir.ui.view">
+        <field name="name">construction.pm.dashboard.tree</field>
+        <field name="model">construction.pm.dashboard</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="project_id"/>
+                <field name="last_refresh"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- PM Dashboard Form View -->
+    <record id="view_pm_dashboard_form" model="ir.ui.view">
+        <field name="name">construction.pm.dashboard.form</field>
+        <field name="model">construction.pm.dashboard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="user_id" readonly="1"/>
+                            <field name="project_id"/>
+                            <field name="last_refresh" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- PM Dashboard List Action -->
+    <record id="action_pm_dashboard_list" model="ir.actions.act_window">
+        <field name="name">PM Dashboard Settings</field>
+        <field name="res_model">construction.pm.dashboard</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No dashboard configurations yet!
+            </p>
+            <p>
+                Create dashboard configurations for project managers.
+            </p>
+        </field>
+    </record>
+
+    <!-- Main Dashboard Menu -->
+    <menuitem id="menu_pm_dashboard_root"
+              name="PM Dashboard"
+              sequence="15"
+              action="action_pm_dashboard"
+              web_icon="construction_pm_dashboard,static/description/icon.png"/>
+
+    <menuitem id="menu_pm_dashboard_config"
+              name="Dashboard Config"
+              parent="menu_pm_dashboard_root"
+              action="action_pm_dashboard_list"
+              sequence="10"/>
+</odoo>

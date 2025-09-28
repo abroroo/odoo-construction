@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Smeta Import Wizard Form View -->
+    <record id="view_smeta_import_wizard_form" model="ir.ui.view">
+        <field name="name">construction.smeta.import.wizard.form</field>
+        <field name="model">construction.smeta.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Smeta">
+                <header>
+                    <!-- Step indicators using simple Odoo 17 compatible syntax -->
+                    <div class="o_progress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info" role="progressbar" style="width: 25%" invisible="step != 'upload'"/>
+                            <div class="progress-bar progress-bar-info" role="progressbar" style="width: 50%" invisible="step != 'mapping'"/>
+                            <div class="progress-bar progress-bar-info" role="progressbar" style="width: 75%" invisible="step != 'preview'"/>
+                            <div class="progress-bar progress-bar-success" role="progressbar" style="width: 100%" invisible="step != 'result'"/>
+                        </div>
+                    </div>
+
+                    <!-- Simple step indicator -->
+                    <div class="text-center mb-3">
+                        <h4>
+                            <span invisible="step != 'upload'">Step 1 of 4: Upload Smeta File</span>
+                            <span invisible="step != 'mapping'">Step 2 of 4: Map Excel Columns</span>
+                            <span invisible="step != 'preview'">Step 3 of 4: Preview Import Data</span>
+                            <span invisible="step != 'result'">Step 4 of 4: Import Complete</span>
+                        </h4>
+                    </div>
+                </header>
+
+                <sheet>
+                    <!-- Hidden fields used in invisibility conditions -->
+                    <field name="step" invisible="1"/>
+
+                    <!-- Step 1: File Upload -->
+                    <div invisible="step != 'upload'">
+                        <div class="oe_title">
+                            <h2>Step 1: Upload Smeta File</h2>
+                            <p>Upload your Excel smeta file and select the target project.</p>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="project_id" options="{'no_create': True}"/>
+                                <field name="budget_id" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="filename" invisible="1"/>
+                                <field name="file_data" filename="filename"/>
+                            </group>
+                        </group>
+
+                        <div class="alert alert-info" role="alert">
+                            <strong>Supported formats:</strong> .xls, .xlsx<br/>
+                            <strong>Expected columns:</strong> Category, Item, Quantity, Unit Price, Total, Unit of Measure<br/>
+                            <strong>Note:</strong> Russian text is fully supported.
+                        </div>
+
+                        <div class="text-right mt-3">
+                            <button name="action_download_template" string="Download Template" type="object" class="btn-link"/>
+                            <button name="action_next_step" string="Next" type="object" class="btn-primary oe_highlight"/>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Russian Smeta Format Detected -->
+                    <div invisible="step != 'mapping'">
+                        <div class="oe_title">
+                            <h2>Step 2: Russian Smeta Format Detected</h2>
+                            <p>Your file appears to be a Russian construction smeta. The import will automatically handle the standard format.</p>
+                        </div>
+
+                        <div class="alert alert-info" role="alert">
+                            <h5>Expected Russian Smeta Structure:</h5>
+                            <ul>
+                                <li><strong>№№</strong> - Task numbers (1, 1.1, 1.2, 2, 2.1, etc.)</li>
+                                <li><strong>ОБОСНОВАНИЕ</strong> - Justification codes</li>
+                                <li><strong>НАИМЕНОВАНИЕ РАБОТ И РЕСУРСОВ</strong> - Work and resource names</li>
+                                <li><strong>ЕД.ИЗМ</strong> - Units of measure</li>
+                                <li><strong>КОЛ-ВО НА ЕДИНИЦУ</strong> - Quantity per unit</li>
+                                <li><strong>ПО ПРОЕКТУ</strong> - Total project quantity</li>
+                            </ul>
+                        </div>
+
+                        <div class="alert alert-success" role="alert">
+                            <strong>Import Strategy:</strong>
+                            <ul>
+                                <li>Main tasks (1, 2, 3...) will be used for organization</li>
+                                <li>Sub-tasks (1.1, 1.2, 2.1...) will be imported as budget lines</li>
+                                <li>РАЗДЕЛ headers will become budget categories</li>
+                                <li>Site managers can track expenses against specific sub-tasks</li>
+                            </ul>
+                        </div>
+
+                        <div class="text-right mt-3">
+                            <button name="action_previous_step" string="Previous" type="object" class="btn-secondary"/>
+                            <button name="action_next_step" string="Preview" type="object" class="btn-primary oe_highlight"/>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Preview -->
+                    <div invisible="step != 'preview'">
+                        <div class="oe_title">
+                            <h2>Step 3: Preview Russian Smeta Structure</h2>
+                            <p>Review the hierarchical structure that will be imported. Only sub-tasks will be imported as budget lines.</p>
+                        </div>
+
+                        <field name="preview_lines">
+                            <tree create="false" delete="false" edit="false"
+                                  decoration-info="row_number.startswith('MAIN')"
+                                  decoration-success="row_number.startswith('SUB')">
+                                <field name="row_number"/>
+                                <field name="category"/>
+                                <field name="item"/>
+                                <field name="quantity"/>
+                                <field name="uom"/>
+                                <field name="unit_price" invisible="1"/>
+                                <field name="total" invisible="1"/>
+                            </tree>
+                        </field>
+
+                        <div class="alert alert-info" role="alert" invisible="not preview_lines">
+                            <strong>Import Strategy:</strong>
+                            <ul>
+                                <li><span class="text-info">🏗️ Main tasks</span> provide structure and organization</li>
+                                <li><span class="text-success">↳ Sub-tasks</span> will be imported as budget lines for expense tracking</li>
+                                <li>Site managers can record expenses against specific sub-tasks</li>
+                                <li>Preview shows first 15 tasks from your smeta</li>
+                            </ul>
+                        </div>
+
+                        <div class="text-right mt-3">
+                            <button name="action_previous_step" string="Previous" type="object" class="btn-secondary"/>
+                            <button name="action_next_step" string="Import Now" type="object" class="btn-primary oe_highlight"/>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Results -->
+                    <div invisible="step != 'result'">
+                        <div class="oe_title">
+                            <h2>Import Complete</h2>
+                        </div>
+
+                        <div class="alert alert-success" role="alert">
+                            <i class="fa fa-check-circle"/> Import completed!
+                        </div>
+
+                        <field name="import_result" readonly="1" nolabel="1" widget="text"/>
+
+                        <group invisible="not created_budget_id">
+                            <group>
+                                <field name="created_budget_id" readonly="1"/>
+                                <field name="import_log_id" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <div class="text-right mt-3">
+                            <button name="action_view_import_log" string="View Import Log" type="object" class="btn-link" invisible="not import_log_id"/>
+                            <button name="action_view_budget" string="View Budget" type="object" class="btn-primary oe_highlight" invisible="not created_budget_id"/>
+                        </div>
+                    </div>
+                </sheet>
+
+                <footer invisible="step in ['upload', 'result']">
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Smeta Import Preview Tree View -->
+    <record id="view_smeta_import_preview_tree" model="ir.ui.view">
+        <field name="name">construction.smeta.import.preview.tree</field>
+        <field name="model">construction.smeta.import.preview</field>
+        <field name="arch" type="xml">
+            <tree create="false" delete="false" edit="false">
+                <field name="row_number"/>
+                <field name="category"/>
+                <field name="item"/>
+                <field name="quantity"/>
+                <field name="unit_price"/>
+                <field name="total"/>
+                <field name="uom"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Smeta Template Form View -->
+    <record id="view_smeta_template_form" model="ir.ui.view">
+        <field name="name">construction.smeta.template.form</field>
+        <field name="model">construction.smeta.template</field>
+        <field name="arch" type="xml">
+            <form string="Smeta Template">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <field name="description" widget="html"/>
+                </sheet>
+                <footer>
+                    <button string="Close" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Import Wizard Action -->
+    <record id="action_smeta_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Smeta</field>
+        <field name="res_model">construction.smeta.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+
+</odoo>

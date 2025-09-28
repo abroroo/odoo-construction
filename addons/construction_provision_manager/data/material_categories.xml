@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Material Categories -->
+    <record id="category_construction_materials" model="construction.material.category">
+        <field name="name">Construction Materials</field>
+        <field name="code">CONSTR</field>
+        <field name="description">Basic construction materials like cement, steel, lumber, etc.</field>
+        <field name="sequence">10</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="category_tools" model="construction.material.category">
+        <field name="name">Tools</field>
+        <field name="code">TOOLS</field>
+        <field name="description">Construction tools and hand equipment</field>
+        <field name="sequence">20</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="category_equipment" model="construction.material.category">
+        <field name="name">Equipment</field>
+        <field name="code">EQUIP</field>
+        <field name="description">Heavy equipment and machinery</field>
+        <field name="sequence">30</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="category_electrical" model="construction.material.category">
+        <field name="name">Electrical</field>
+        <field name="code">ELECT</field>
+        <field name="description">Electrical components and materials</field>
+        <field name="sequence">40</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="category_plumbing" model="construction.material.category">
+        <field name="name">Plumbing</field>
+        <field name="code">PLUMB</field>
+        <field name="description">Plumbing materials and fixtures</field>
+        <field name="sequence">50</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="category_safety" model="construction.material.category">
+        <field name="name">Safety Equipment</field>
+        <field name="code">SAFETY</field>
+        <field name="description">Safety equipment and protective gear</field>
+        <field name="sequence">60</field>
+        <field name="color">6</field>
+    </record>
+</odoo>

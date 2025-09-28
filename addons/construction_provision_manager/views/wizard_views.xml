@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Material Consumption Wizard -->
+    <record id="view_material_consumption_wizard_form" model="ir.ui.view">
+        <field name="name">material.consumption.wizard.form</field>
+        <field name="model">construction.material.consumption.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Consume Material">
+                <sheet>
+                    <div class="oe_title">
+                        <h2>Consume Material</h2>
+                    </div>
+
+                    <group>
+                        <field name="delivery_id" readonly="1"/>
+                        <field name="available_quantity" readonly="1"/>
+                    </group>
+
+                    <group>
+                        <field name="consume_quantity" required="1"/>
+                        <field name="consumption_date" required="1"/>
+                    </group>
+
+                    <group string="Optional Information">
+                        <field name="project_task_id" options="{'no_create': True}"/>
+                        <field name="notes" placeholder="Notes about material usage..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_consume_material" string="Record Consumption" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Material Export Wizard -->
+    <record id="view_material_export_wizard_form" model="ir.ui.view">
+        <field name="name">material.export.wizard.form</field>
+        <field name="model">construction.material.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Materials Data">
+                <sheet>
+                    <div class="oe_title">
+                        <h2>Export Materials Data</h2>
+                    </div>
+
+                    <group>
+                        <group string="Export Options">
+                            <field name="export_type" required="1"/>
+                            <field name="file_format" required="1"/>
+                        </group>
+                        <group string="Date Range">
+                            <field name="date_from" required="1"/>
+                            <field name="date_to" required="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Filters">
+                            <field name="project_ids" widget="many2many_tags"/>
+                            <field name="category_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+
+                    <group string="Export File" invisible="not export_file">
+                        <field name="export_filename" readonly="1"/>
+                        <field name="export_file" readonly="1" filename="export_filename"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_export" string="Generate Export" type="object" class="btn-primary" invisible="export_file"/>
+                    <button name="action_download" string="Download File" type="object" class="btn-success" invisible="not export_file"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_material_consumption_wizard" model="ir.actions.act_window">
+        <field name="name">Consume Material</field>
+        <field name="res_model">construction.material.consumption.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_material_export_wizard" model="ir.actions.act_window">
+        <field name="name">Export Materials Data</field>
+        <field name="res_model">construction.material.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

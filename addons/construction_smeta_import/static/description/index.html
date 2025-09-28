@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Construction Smeta Import</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background: #2e7d32; color: white; padding: 20px; border-radius: 8px; }
+        .feature { margin: 15px 0; padding: 15px; background: #f5f5f5; border-radius: 5px; }
+        .highlight { color: #2e7d32; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Construction Smeta Import</h1>
+        <p>Import Excel smeta (budget estimate) files directly into Odoo construction budgets</p>
+    </div>
+
+    <div class="feature">
+        <h3>🔧 Key Features</h3>
+        <ul>
+            <li>Excel file upload (.xls, .xlsx) with automatic column detection</li>
+            <li>Flexible column mapping for various Excel formats</li>
+            <li>Support for Russian text and international characters</li>
+            <li>Preview before import with error detection</li>
+            <li>Automatic budget line creation and project linking</li>
+            <li>Import history and logging</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h3>📊 Excel Template Support</h3>
+        <p>The module supports Excel files with these columns:</p>
+        <ul>
+            <li><span class="highlight">Category</span> - Budget category (Materials, Labor, Equipment, etc.)</li>
+            <li><span class="highlight">Item</span> - Description of work or material (Required)</li>
+            <li><span class="highlight">Quantity</span> - Amount needed</li>
+            <li><span class="highlight">Unit Price</span> - Price per unit</li>
+            <li><span class="highlight">Total</span> - Total amount (auto-calculated if empty)</li>
+            <li><span class="highlight">Unit of Measure</span> - Units (m², kg, hours, etc.)</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h3>🚀 How to Use</h3>
+        <ol>
+            <li>Go to Construction Budget → Budget Management → Import Smeta</li>
+            <li>Upload your Excel file and select target project</li>
+            <li>Map Excel columns to Odoo fields</li>
+            <li>Preview and confirm import</li>
+            <li>Review results and created budget lines</li>
+        </ol>
+    </div>
+
+    <div class="feature">
+        <h3>🔗 Integration</h3>
+        <p>This module integrates with:</p>
+        <ul>
+            <li>Construction Budget Management module</li>
+            <li>Project Management</li>
+            <li>Budget categories and units of measure</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Project Budget Form View -->
+    <record id="view_project_budget_form" model="ir.ui.view">
+        <field name="name">construction.project.budget.form</field>
+        <field name="model">construction.project.budget</field>
+        <field name="arch" type="xml">
+            <form string="Project Budget">
+                <header>
+                    <button name="action_approve" type="object" string="Approve"
+                            class="btn-primary" invisible="state != 'draft'" />
+                    <button name="action_activate" type="object" string="Activate"
+                            class="btn-primary" invisible="state != 'approved'" />
+                    <button name="action_close" type="object" string="Close"
+                            class="btn-secondary" invisible="state != 'active'" />
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            class="btn-secondary" invisible="state == 'draft'" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,active,closed"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_budget_analysis" type="object"
+                                class="oe_stat_button" icon="fa-bar-chart">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Budget</span>
+                                <span class="o_stat_text">Analysis</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Budget Name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="alert_threshold" widget="percentage"/>
+                            <field name="is_over_budget" invisible="1"/>
+                            <field name="is_near_budget_limit" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <!-- Budget Summary -->
+                    <group string="Budget Summary">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="o_kanban_primary_bottom">
+                                    <div class="o_kanban_primary_bottom_right">
+                                        <span class="badge badge-pill badge-danger"
+                                              invisible="not is_over_budget">Over Budget</span>
+                                        <span class="badge badge-pill badge-warning"
+                                              invisible="not is_near_budget_limit">Near Limit</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <group>
+                            <field name="total_budget" widget="monetary"/>
+                            <field name="total_spent" widget="monetary"/>
+                            <field name="total_committed" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="remaining_budget" widget="monetary"/>
+                            <field name="budget_utilization" widget="percentage"/>
+                        </group>
+                    </group>
+
+                    <!-- Budget Lines -->
+                    <notebook>
+                        <page string="Budget Lines" name="budget_lines">
+                            <field name="budget_line_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="category_id" options="{'no_create': True}"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id" options="{'no_create': True}"/>
+                                    <field name="unit_price" widget="monetary"/>
+                                    <field name="budget_amount" widget="monetary" sum="Total Budget"/>
+                                    <field name="spent_amount" widget="monetary" sum="Total Spent"/>
+                                    <field name="committed_amount" widget="monetary" sum="Total Committed"/>
+                                    <field name="remaining_amount" widget="monetary" sum="Total Remaining"/>
+                                    <field name="progress_percentage" widget="percentage"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Budget notes and comments..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Project Budget Tree View -->
+    <record id="view_project_budget_tree" model="ir.ui.view">
+        <field name="name">construction.project.budget.tree</field>
+        <field name="model">construction.project.budget</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'"
+                  decoration-success="state == 'active'"
+                  decoration-warning="is_near_budget_limit"
+                  decoration-danger="is_over_budget">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'active'"
+                       decoration-warning="state == 'approved'"
+                       decoration-muted="state == 'closed'"/>
+                <field name="total_budget" widget="monetary" sum="Total Budget"/>
+                <field name="total_spent" widget="monetary" sum="Total Spent"/>
+                <field name="remaining_budget" widget="monetary" sum="Total Remaining"/>
+                <field name="budget_utilization" widget="percentage"/>
+                <field name="is_over_budget" invisible="1"/>
+                <field name="is_near_budget_limit" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Project Budget Kanban View -->
+    <record id="view_project_budget_kanban" model="ir.ui.view">
+        <field name="name">construction.project.budget.kanban</field>
+        <field name="model">construction.project.budget</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="state"/>
+                <field name="total_budget"/>
+                <field name="total_spent"/>
+                <field name="remaining_budget"/>
+                <field name="budget_utilization"/>
+                <field name="is_over_budget"/>
+                <field name="is_near_budget_limit"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <strong><field name="name"/></strong>
+                                    </div>
+                                    <div class="o_secondary">
+                                        <field name="project_id"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section">
+                                    <span class="badge badge-pill"
+                                          t-att-class="record.state.raw_value === 'active' ? 'badge-success' :
+                                                      record.state.raw_value === 'approved' ? 'badge-warning' :
+                                                      record.state.raw_value === 'closed' ? 'badge-secondary' : 'badge-info'">
+                                        <field name="state"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span>Budget: </span>
+                                        <field name="total_budget" widget="monetary"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>Spent: </span>
+                                        <field name="total_spent" widget="monetary"/>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-6">
+                                        <span>Remaining: </span>
+                                        <field name="remaining_budget" widget="monetary"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>Usage: </span>
+                                        <field name="budget_utilization" widget="percentage"/>
+                                    </div>
+                                </div>
+                                <div class="row mt-2" t-if="record.is_over_budget.raw_value || record.is_near_budget_limit.raw_value">
+                                    <div class="col-12">
+                                        <span class="badge badge-danger" t-if="record.is_over_budget.raw_value">
+                                            Over Budget
+                                        </span>
+                                        <span class="badge badge-warning" t-if="record.is_near_budget_limit.raw_value">
+                                            Near Limit
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Budget Line Tree View -->
+    <record id="view_budget_line_tree" model="ir.ui.view">
+        <field name="name">construction.project.budget.line.tree</field>
+        <field name="model">construction.project.budget.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="project_id"/>
+                <field name="category_id"/>
+                <field name="name"/>
+                <field name="quantity"/>
+                <field name="uom_id"/>
+                <field name="unit_price" widget="monetary"/>
+                <field name="budget_amount" widget="monetary"/>
+                <field name="spent_amount" widget="monetary"/>
+                <field name="remaining_amount" widget="monetary"/>
+                <field name="progress_percentage" widget="percentage"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_project_budget" model="ir.actions.act_window">
+        <field name="name">Project Budgets</field>
+        <field name="res_model">construction.project.budget</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first construction project budget!
+            </p>
+            <p>
+                Track budgets vs actual spending for your construction projects.
+                Monitor materials, labor, equipment, and overhead costs.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_budget_lines" model="ir.actions.act_window">
+        <field name="name">Budget Lines</field>
+        <field name="res_model">construction.project.budget.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+    </record>
+
+</odoo>

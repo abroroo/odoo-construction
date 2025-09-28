@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Create category for construction groups -->
+    <record id="module_category_construction" model="ir.module.category">
+        <field name="name">Construction</field>
+        <field name="description">Construction Business Management</field>
+        <field name="sequence">5</field>
+    </record>
+
+    <!-- Dummy group to hide menus from all users -->
+    <record id="group_hidden_menus" model="res.groups">
+        <field name="name">Hidden Menus (Internal)</field>
+        <field name="category_id" ref="module_category_construction"/>
+        <field name="comment">Internal group for hiding unnecessary menus</field>
+    </record>
+</odoo>

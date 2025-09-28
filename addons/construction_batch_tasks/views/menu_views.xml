@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Replace complex Excel import with simple batch creation -->
+
+    <!-- Add to Project Menu -->
+    <menuitem id="menu_batch_create_tasks_project"
+              name="Batch Create Tasks"
+              parent="project.menu_main_pm"
+              action="action_batch_task_wizard"
+              sequence="15"/>
+
+    <!-- Add to Construction Budget Menu -->
+    <menuitem id="menu_batch_create_tasks_budget"
+              name="Batch Create Tasks"
+              parent="construction_budget.menu_construction_budget_management"
+              action="action_batch_task_wizard"
+              sequence="30"/>
+
+</odoo>

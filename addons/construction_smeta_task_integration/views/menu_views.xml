@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add Task Integration Menu Items -->
+
+    <!-- Smeta Tasks Menu in Project -->
+    <menuitem id="menu_smeta_tasks_project"
+              name="Smeta Tasks"
+              parent="project.menu_main_pm"
+              action="action_smeta_tasks"
+              sequence="25"/>
+
+    <!-- Task Integration Menu in Construction Budget -->
+    <menuitem id="menu_task_integration"
+              name="Task Integration"
+              parent="construction_budget.menu_construction_budget_main"
+              sequence="50"/>
+
+    <menuitem id="menu_smeta_tasks_budget"
+              name="Smeta Tasks"
+              parent="menu_task_integration"
+              action="action_smeta_tasks_by_project"
+              sequence="10"/>
+
+    <menuitem id="menu_budget_lines_with_tasks"
+              name="Budget Lines with Tasks"
+              parent="menu_task_integration"
+              action="action_budget_lines_with_tasks"
+              sequence="20"/>
+
+</odoo>

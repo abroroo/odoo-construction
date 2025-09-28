@@ -1,0 +1,106 @@
+/* Simple Primary Color Change - Minimal and Safe */
+
+/* Primary color variables */
+:root {
+    --primary-blue: #3B82F6;
+    --primary-blue-light: #60A5FA;
+    --primary-blue-dark: #2563EB;
+}
+
+/* Basic primary elements */
+.btn-primary {
+    background-color: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-blue-light) !important;
+    border-color: var(--primary-blue-light) !important;
+}
+
+.text-primary {
+    color: var(--primary-blue) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-blue) !important;
+}
+
+/* Odoo specific primary elements */
+.o_main_navbar {
+    background-color: var(--primary-blue) !important;
+}
+
+.o_form_button_create {
+    background-color: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+}
+
+/* Check for secondary/accent colors that might be reddish */
+.bg-secondary {
+    background-color: var(--primary-blue) !important;
+    color: white !important;
+}
+
+.btn-secondary {
+    background-color: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+    color: white !important;
+}
+
+.text-secondary {
+    color: var(--primary-blue) !important;
+}
+
+/* Odoo control panel tabs - likely the reddish area you mentioned */
+.o_cp_controller,
+.o_control_panel {
+    background-color: var(--primary-blue) !important;
+    color: white !important;
+}
+
+.o_cp_controller * {
+    color: white !important;
+}
+
+/* Navigation tabs */
+.nav-tabs .nav-link {
+    color: var(--primary-blue) !important;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: var(--primary-blue) !important;
+    color: white !important;
+    border-color: var(--primary-blue) !important;
+}
+
+/* Breadcrumb navigation */
+.o_cp_breadcrumbs {
+    background-color: var(--primary-blue) !important;
+    color: white !important;
+}
+
+.o_cp_breadcrumbs * {
+    color: white !important;
+}
+
+/* Action buttons area */
+.o_cp_action_menus {
+    background-color: var(--primary-blue) !important;
+}
+
+/* Any other accent colors */
+.bg-info {
+    background-color: var(--primary-blue) !important;
+    color: white !important;
+}
+
+.bg-warning {
+    background-color: #F59E0B !important;
+    color: white !important;
+}
+
+.bg-success {
+    background-color: #10B981 !important;
+    color: white !important;
+}

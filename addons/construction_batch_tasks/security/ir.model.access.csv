@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_batch_task_wizard_user,batch_task_wizard_user,model_construction_batch_task_wizard,project.group_project_user,1,1,1,1
+access_batch_task_wizard_manager,batch_task_wizard_manager,model_construction_batch_task_wizard,project.group_project_manager,1,1,1,1
+access_batch_task_preview_user,batch_task_preview_user,model_construction_batch_task_preview,project.group_project_user,1,1,1,1
+access_batch_task_preview_manager,batch_task_preview_manager,model_construction_batch_task_preview,project.group_project_manager,1,1,1,1

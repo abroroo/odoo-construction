@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Smeta Import Log Form View -->
+    <record id="view_smeta_import_log_form" model="ir.ui.view">
+        <field name="name">construction.smeta.import.log.form</field>
+        <field name="model">construction.smeta.import.log</field>
+        <field name="arch" type="xml">
+            <form string="Import Log" create="false" edit="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,processing,success,failed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="budget_id"/>
+                            <field name="filename"/>
+                        </group>
+                        <group>
+                            <field name="import_date"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+
+                    <group string="Import Statistics">
+                        <group>
+                            <field name="total_lines"/>
+                            <field name="imported_lines"/>
+                        </group>
+                        <group>
+                            <field name="error_lines"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Import notes and summary..."/>
+                        </page>
+                        <page string="Error Messages" name="errors" invisible="not error_messages">
+                            <field name="error_messages" widget="text" placeholder="No errors"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Smeta Import Log Tree View -->
+    <record id="view_smeta_import_log_tree" model="ir.ui.view">
+        <field name="name">construction.smeta.import.log.tree</field>
+        <field name="model">construction.smeta.import.log</field>
+        <field name="arch" type="xml">
+            <tree create="false"
+                  decoration-success="state == 'success'"
+                  decoration-danger="state == 'failed'"
+                  decoration-warning="state == 'processing'">
+                <field name="import_date"/>
+                <field name="project_id"/>
+                <field name="budget_id"/>
+                <field name="filename"/>
+                <field name="user_id"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'success'"
+                       decoration-danger="state == 'failed'"
+                       decoration-warning="state == 'processing'"
+                       decoration-info="state == 'draft'"/>
+                <field name="total_lines"/>
+                <field name="imported_lines"/>
+                <field name="error_lines"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Smeta Import Log Search View -->
+    <record id="view_smeta_import_log_search" model="ir.ui.view">
+        <field name="name">construction.smeta.import.log.search</field>
+        <field name="model">construction.smeta.import.log</field>
+        <field name="arch" type="xml">
+            <search string="Import Logs">
+                <field name="project_id"/>
+                <field name="budget_id"/>
+                <field name="filename"/>
+                <field name="user_id"/>
+
+                <filter string="Successful" name="successful" domain="[('state', '=', 'success')]"/>
+                <filter string="Failed" name="failed" domain="[('state', '=', 'failed')]"/>
+                <filter string="Processing" name="processing" domain="[('state', '=', 'processing')]"/>
+
+                <separator/>
+                <filter string="My Imports" name="my_imports" domain="[('user_id', '=', uid)]"/>
+                <filter string="Today" name="today" domain="[('import_date', '>=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Week" name="this_week" domain="[('import_date', '>=', (context_today()-datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                    <filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Import Date" name="group_date" context="{'group_by': 'import_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_smeta_import_logs" model="ir.actions.act_window">
+        <field name="name">Import Logs</field>
+        <field name="res_model">construction.smeta.import.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No import logs found!
+            </p>
+            <p>
+                Import logs will appear here after you import smeta files.
+                Use the "Import Smeta" wizard to start importing Excel files.
+            </p>
+        </field>
+    </record>
+
+</odoo>

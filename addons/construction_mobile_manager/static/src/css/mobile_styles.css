@@ -1,0 +1,350 @@
+/* Mobile Construction Manager Styles */
+
+/* Base Mobile Optimizations */
+@media (max-width: 768px) {
+    /* Global Mobile Adjustments */
+    .o_main_navbar {
+        padding: 0.5rem 1rem;
+    }
+
+    .o_action_manager .o_control_panel {
+        padding: 0.5rem;
+    }
+
+    /* Mobile Dashboard Styles */
+    .o_construction_mobile_dashboard {
+        padding: 0.5rem;
+    }
+
+    .o_mobile_dashboard_card {
+        margin-bottom: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 120px;
+    }
+
+    .o_mobile_dashboard_card .o_kanban_image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px 0 0 12px;
+        width: 80px;
+    }
+
+    .o_mobile_dashboard_card .o_kanban_image i {
+        color: white;
+        opacity: 0.9;
+    }
+
+    /* Task Kanban Mobile Styles */
+    .o_project_task_mobile_kanban {
+        padding: 0.5rem;
+    }
+
+    .o_mobile_task_card {
+        margin-bottom: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid #007bff;
+        background: white;
+        min-height: 100px;
+    }
+
+    .o_mobile_task_card .o_kanban_record_top {
+        padding: 1rem 1rem 0.5rem;
+    }
+
+    .o_mobile_task_card .o_kanban_record_title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.4;
+    }
+
+    .o_mobile_task_card .o_kanban_record_subtitle {
+        color: #666;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+
+    .o_mobile_task_details {
+        padding: 0 1rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .o_mobile_task_details .o_priority i {
+        font-size: 1.2rem;
+    }
+
+    .o_mobile_task_details .o_deadline {
+        color: #666;
+        font-size: 0.85rem;
+    }
+
+    .o_mobile_quick_actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .o_mobile_status_btn {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+    }
+
+    /* Expense Kanban Mobile Styles */
+    .o_mobile_expense_kanban {
+        padding: 0.5rem;
+    }
+
+    .o_mobile_expense_card {
+        margin-bottom: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background: white;
+        overflow: hidden;
+    }
+
+    .o_mobile_expense_card .o_kanban_image {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 12px 0 0 12px;
+    }
+
+    .o_mobile_expense_card .o_kanban_image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .o_mobile_expense_card .o_kanban_image i {
+        font-size: 2rem;
+        color: #6c757d;
+    }
+
+    .o_mobile_expense_details {
+        padding: 0.5rem 0;
+    }
+
+    .o_expense_amount {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 0.25rem;
+    }
+
+    .o_expense_material,
+    .o_expense_date {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+    }
+
+    .o_expense_material i,
+    .o_expense_date i {
+        width: 16px;
+        margin-right: 0.5rem;
+    }
+
+    /* Form Styles for Mobile */
+    .o_mobile_expense_form,
+    .o_mobile_task_form {
+        padding: 1rem;
+    }
+
+    .o_mobile_expense_form .oe_title h1,
+    .o_mobile_task_form .oe_title h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .o_mobile_expense_form .o_group,
+    .o_mobile_task_form .o_group {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Task Filter Buttons */
+    .o_mobile_task_filters {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .o_mobile_filter_btn {
+        flex: 1;
+        min-width: 80px;
+        font-size: 0.8rem;
+        padding: 0.5rem;
+        border-radius: 20px;
+    }
+
+    .o_mobile_filter_btn.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    /* Budget Information Display */
+    .o_mobile_budget_info {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+
+    /* Bottom Navigation (if implemented) */
+    .o_mobile_bottom_nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #dee2e6;
+        display: flex;
+        justify-content: space-around;
+        padding: 0.5rem 0;
+        z-index: 1000;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .o_mobile_bottom_nav .nav-item {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem;
+        color: #6c757d;
+        text-decoration: none;
+        font-size: 0.8rem;
+    }
+
+    .o_mobile_bottom_nav .nav-item.active {
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .o_mobile_bottom_nav .nav-item i {
+        display: block;
+        font-size: 1.2rem;
+        margin-bottom: 0.25rem;
+    }
+
+    /* Status Badge Colors */
+    .badge-draft {
+        background-color: #6c757d;
+    }
+
+    .badge-submitted {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .badge-approved {
+        background-color: #28a745;
+    }
+
+    .badge-refused {
+        background-color: #dc3545;
+    }
+
+    /* Stage-specific Task Card Colors */
+    .o_mobile_task_card[data-stage="todo"] {
+        border-left-color: #6c757d;
+    }
+
+    .o_mobile_task_card[data-stage="progress"] {
+        border-left-color: #ffc107;
+    }
+
+    .o_mobile_task_card[data-stage="done"] {
+        border-left-color: #28a745;
+    }
+
+    /* Responsive Images */
+    .o_mobile_expense_card .oe_avatar,
+    .o_mobile_task_form .oe_avatar {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    /* Touch-friendly Buttons */
+    .btn-sm {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Improved Readability */
+    .o_kanban_record_title {
+        line-height: 1.4;
+        word-wrap: break-word;
+    }
+
+    .o_kanban_record_subtitle {
+        line-height: 1.3;
+    }
+
+    /* Loading States */
+    .o_mobile_loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        color: #6c757d;
+    }
+
+    .o_mobile_loading i {
+        animation: spin 1s linear infinite;
+        margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+}
+
+/* Large Screen Adjustments */
+@media (min-width: 769px) {
+    .o_construction_mobile_dashboard .o_kanban_record {
+        max-width: 400px;
+        margin: 0 auto 1rem;
+    }
+
+    .o_mobile_expense_kanban .o_kanban_record,
+    .o_project_task_mobile_kanban .o_kanban_record {
+        max-width: 350px;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .o_mobile_dashboard_card,
+    .o_mobile_task_card,
+    .o_mobile_expense_card {
+        background: #2d3748;
+        color: #e2e8f0;
+        border-color: #4a5568;
+    }
+
+    .o_mobile_budget_info {
+        background: #1a202c;
+        color: #e2e8f0;
+    }
+
+    .o_mobile_bottom_nav {
+        background: #2d3748;
+        border-top-color: #4a5568;
+    }
+}

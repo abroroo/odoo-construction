@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_construction_provision_manager_root"
+              name="Materials"
+              sequence="25"
+              web_icon="construction_provision_manager,static/description/icon.png"/>
+
+    <!-- Quick Access Menu -->
+    <menuitem id="menu_quick_add"
+              name="Quick Add Material"
+              parent="menu_construction_provision_manager_root"
+              action="action_material_delivery_quick_add"
+              sequence="10"/>
+
+    <!-- Deliveries Menu -->
+    <menuitem id="menu_material_deliveries"
+              name="Material Deliveries"
+              parent="menu_construction_provision_manager_root"
+              action="action_material_delivery"
+              sequence="20"/>
+
+    <!-- Project Inventory Menu -->
+    <menuitem id="menu_project_inventory"
+              name="Project Inventory"
+              parent="menu_construction_provision_manager_root"
+              action="action_project_material_inventory"
+              sequence="30"/>
+
+    <!-- Templates Menu -->
+    <menuitem id="menu_material_templates"
+              name="Material Templates"
+              parent="menu_construction_provision_manager_root"
+              action="action_common_materials"
+              sequence="40"/>
+
+    <!-- Reports Menu -->
+    <menuitem id="menu_material_reports"
+              name="Reports"
+              parent="menu_construction_provision_manager_root"
+              sequence="80"/>
+
+    <menuitem id="menu_material_export"
+              name="Export Data"
+              parent="menu_material_reports"
+              action="action_material_export_wizard"
+              sequence="10"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_material_config"
+              name="Configuration"
+              parent="menu_construction_provision_manager_root"
+              sequence="90"/>
+
+    <menuitem id="menu_material_categories"
+              name="Material Categories"
+              parent="menu_material_config"
+              action="action_material_categories"
+              sequence="10"/>
+</odoo>

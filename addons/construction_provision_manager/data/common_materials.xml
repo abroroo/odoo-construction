@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Common Construction Materials -->
+
+    <!-- Construction Materials -->
+    <record id="material_cement" model="construction.common.material">
+        <field name="name">Portland Cement</field>
+        <field name="category_id" ref="category_construction_materials"/>
+        <field name="default_unit">bags</field>
+        <field name="description">Standard Portland cement for construction</field>
+        <field name="is_frequently_used">True</field>
+        <field name="average_price">15.50</field>
+    </record>
+
+    <record id="material_steel_rebar" model="construction.common.material">
+        <field name="name">Steel Rebar</field>
+        <field name="category_id" ref="category_construction_materials"/>
+        <field name="default_unit">tons</field>
+        <field name="description">Reinforcement steel bars</field>
+        <field name="is_frequently_used">True</field>
+        <field name="average_price">650.00</field>
+    </record>
+
+    <record id="material_lumber" model="construction.common.material">
+        <field name="name">Lumber 2x4</field>
+        <field name="category_id" ref="category_construction_materials"/>
+        <field name="default_unit">pcs</field>
+        <field name="description">2x4 inch lumber pieces</field>
+        <field name="is_frequently_used">True</field>
+        <field name="average_price">8.75</field>
+    </record>
+
+    <record id="material_sand" model="construction.common.material">
+        <field name="name">Construction Sand</field>
+        <field name="category_id" ref="category_construction_materials"/>
+        <field name="default_unit">m3</field>
+        <field name="description">Fine sand for construction use</field>
+        <field name="is_frequently_used">True</field>
+        <field name="average_price">25.00</field>
+    </record>
+
+    <record id="material_gravel" model="construction.common.material">
+        <field name="name">Gravel</field>
+        <field name="category_id" ref="category_construction_materials"/>
+        <field name="default_unit">m3</field>
+        <field name="description">Construction grade gravel</field>
+        <field name="is_frequently_used">True</field>
+        <field name="average_price">30.00</field>
+    </record>
+
+    <record id="material_bricks" model="construction.common.material">
+        <field name="name">Red Bricks</field>
+        <field name="category_id" ref="category_construction_materials"/>
+        <field name="default_unit">pcs</field>
+        <field name="description">Standard red clay bricks</field>
+        <field name="is_frequently_used">True</field>
+        <field name="average_price">0.45</field>
+    </record>
+
+    <!-- Tools -->
+    <record id="material_hammer" model="construction.common.material">
+        <field name="name">Claw Hammer</field>
+        <field name="category_id" ref="category_tools"/>
+        <field name="default_unit">pcs</field>
+        <field name="description">Standard claw hammer</field>
+        <field name="average_price">25.00</field>
+    </record>
+
+    <record id="material_drill" model="construction.common.material">
+        <field name="name">Power Drill</field>
+        <field name="category_id" ref="category_tools"/>
+        <field name="default_unit">pcs</field>
+        <field name="description">Cordless power drill</field>
+        <field name="average_price">150.00</field>
+    </record>
+
+    <record id="material_saw" model="construction.common.material">
+        <field name="name">Circular Saw</field>
+        <field name="category_id" ref="category_tools"/>
+        <field name="default_unit">pcs</field>
+        <field name="description">Electric circular saw</field>
+        <field name="average_price">200.00</field>
+    </record>
+
+    <!-- Equipment -->
+    <record id="material_excavator" model="construction.common.material">
+        <field name="name">Mini Excavator</field>
+        <field name="category_id" ref="category_equipment"/>
+        <field name="default_unit">days</field>
+        <field name="description">Small excavator rental</field>
+        <field name="average_price">350.00</field>
+    </record>
+
+    <record id="material_mixer" model="construction.common.material">
+        <field name="name">Concrete Mixer</field>
+        <field name="category_id" ref="category_equipment"/>
+        <field name="default_unit">days</field>
+        <field name="description">Portable concrete mixer rental</field>
+        <field name="average_price">75.00</field>
+    </record>
+
+    <!-- Electrical -->
+    <record id="material_wire" model="construction.common.material">
+        <field name="name">Electrical Wire 12 AWG</field>
+        <field name="category_id" ref="category_electrical"/>
+        <field name="default_unit">m</field>
+        <field name="description">12 gauge electrical wire</field>
+        <field name="average_price">2.50</field>
+    </record>
+
+    <record id="material_outlets" model="construction.common.material">
+        <field name="name">Electrical Outlets</field>
+        <field name="category_id" ref="category_electrical"/>
+        <field name="default_unit">pcs</field>
+        <field name="description">Standard electrical outlets</field>
+        <field name="average_price">12.00</field>
+    </record>
+
+    <!-- Plumbing -->
+    <record id="material_pipes" model="construction.common.material">
+        <field name="name">PVC Pipe 4 inch</field>
+        <field name="category_id" ref="category_plumbing"/>
+        <field name="default_unit">m</field>
+        <field name="description">4 inch PVC drainage pipe</field>
+        <field name="average_price">8.50</field>
+    </record>
+
+    <!-- Safety -->
+    <record id="material_hard_hats" model="construction.common.material">
+        <field name="name">Hard Hats</field>
+        <field name="category_id" ref="category_safety"/>
+        <field name="default_unit">pcs</field>
+        <field name="description">Safety hard hats</field>
+        <field name="average_price">18.00</field>
+    </record>
+
+    <record id="material_safety_vests" model="construction.common.material">
+        <field name="name">Safety Vests</field>
+        <field name="category_id" ref="category_safety"/>
+        <field name="default_unit">pcs</field>
+        <field name="description">High visibility safety vests</field>
+        <field name="average_price">15.00</field>
+    </record>
+</odoo>

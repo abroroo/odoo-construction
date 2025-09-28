@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="PMDashboard" owl="1">
+        <div class="pm_dashboard_container">
+            <!-- Dashboard Header -->
+            <div class="pm_dashboard_header">
+                <div class="pm_project_selector">
+                    <select class="pm_project_dropdown" t-on-change="onProjectChange">
+                        <option value="">Select Project...</option>
+                        <t t-foreach="state.projects" t-as="project" t-key="project.id">
+                            <option t-att-value="project.id"
+                                    t-att-selected="project.id === state.currentProject?.id">
+                                <t t-esc="project.name"/>
+                            </option>
+                        </t>
+                    </select>
+                    <button class="pm_refresh_btn" t-on-click="onRefreshClick">
+                        <i class="fa fa-refresh"></i>
+                        Refresh
+                    </button>
+                </div>
+
+                <div t-if="state.currentProject?.name">
+                    <h2 t-esc="state.currentProject.name" style="margin: 0; color: #2c3e50;"/>
+                    <small style="color: #6c757d;">
+                        Last updated: <t t-esc="state.lastRefresh.toLocaleTimeString()"/>
+                    </small>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div t-if="state.loading" class="pm_loading">
+                <i class="fa fa-spinner fa-spin"></i>
+                Loading dashboard...
+            </div>
+
+            <!-- Dashboard Content -->
+            <div t-if="!state.loading and state.currentProject">
+
+                <!-- Budget Alerts -->
+                <div t-if="state.dashboardData.budget_monitor?.budget_alerts?.length" class="pm_alerts_container">
+                    <t t-foreach="state.dashboardData.budget_monitor.budget_alerts" t-as="alert" t-key="alert_index">
+                        <div t-att-class="'pm_alert ' + alert.type">
+                            <i t-att-class="'pm_alert_icon fa ' + alert.icon"></i>
+                            <div class="pm_alert_content">
+                                <div class="pm_alert_title" t-esc="alert.title"/>
+                                <div t-esc="alert.message"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Overview Cards -->
+                <div class="pm_overview_grid">
+
+                    <!-- Project Progress Card -->
+                    <div class="pm_overview_card">
+                        <div class="pm_card_header">
+                            <h3 class="pm_card_title">
+                                <i class="fa fa-tasks"></i>
+                                Project Progress
+                            </h3>
+                        </div>
+                        <div class="pm_card_body">
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Completion</span>
+                                <span class="pm_stat_value" t-esc="formatPercentage(state.currentProject.progress_percentage)"/>
+                            </div>
+                            <div class="pm_progress_bar">
+                                <div t-att-class="'pm_progress_fill ' + getProgressBarClass(state.currentProject.progress_percentage)"
+                                     t-att-style="'width: ' + (state.currentProject.progress_percentage || 0) + '%'"/>
+                            </div>
+
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Total Tasks</span>
+                                <span class="pm_stat_value" t-esc="state.currentProject.total_tasks"/>
+                            </div>
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">To Do</span>
+                                <span class="pm_stat_value" t-esc="state.currentProject.todo_count"/>
+                            </div>
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">In Progress</span>
+                                <span class="pm_stat_value" t-esc="state.currentProject.progress_count"/>
+                            </div>
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Done</span>
+                                <span class="pm_stat_value" t-esc="state.currentProject.done_count"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Status Card -->
+                    <div class="pm_overview_card">
+                        <div class="pm_card_header">
+                            <h3 class="pm_card_title">
+                                <i class="fa fa-dollar-sign"></i>
+                                Budget Status
+                            </h3>
+                        </div>
+                        <div class="pm_card_body">
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Budget Used</span>
+                                <span class="pm_stat_value" t-esc="formatPercentage(state.currentProject.budget_percentage)"/>
+                            </div>
+                            <div class="pm_progress_bar">
+                                <div t-att-class="'pm_progress_fill ' + getBudgetStatusClass(state.currentProject.over_budget, state.currentProject.budget_percentage)"
+                                     t-att-style="'width: ' + Math.min(state.currentProject.budget_percentage || 0, 100) + '%'"/>
+                            </div>
+
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Allocated</span>
+                                <span class="pm_stat_value" t-esc="formatCurrency(state.currentProject.budget_allocated)"/>
+                            </div>
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Spent</span>
+                                <span class="pm_stat_value" t-esc="formatCurrency(state.currentProject.budget_spent)"/>
+                            </div>
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Remaining</span>
+                                <span class="pm_stat_value" t-esc="formatCurrency(state.currentProject.budget_remaining)"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Overview Card -->
+                    <div class="pm_overview_card">
+                        <div class="pm_card_header">
+                            <h3 class="pm_card_title">
+                                <i class="fa fa-users"></i>
+                                Team Overview
+                            </h3>
+                        </div>
+                        <div class="pm_card_body">
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Team Size</span>
+                                <span class="pm_stat_value" t-esc="state.currentProject.team_size"/>
+                            </div>
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Active Workers</span>
+                                <span class="pm_stat_value" t-esc="state.currentProject.active_workers"/>
+                            </div>
+                            <div class="pm_stat_row">
+                                <span class="pm_stat_label">Pending Expenses</span>
+                                <span class="pm_stat_value" t-esc="state.dashboardData.team_overview?.pending_expense_approvals || 0"/>
+                            </div>
+
+                            <t t-if="state.currentProject.deadline">
+                                <div class="pm_stat_row">
+                                    <span class="pm_stat_label">Deadline</span>
+                                    <span class="pm_stat_value" t-esc="formatDate(state.currentProject.deadline)"/>
+                                </div>
+                                <div class="pm_stat_row" t-if="state.currentProject.days_remaining !== null">
+                                    <span class="pm_stat_label">Days Remaining</span>
+                                    <span t-att-class="'pm_stat_value ' + (state.currentProject.days_remaining &lt; 0 ? 'text-danger' : '')"
+                                          t-esc="state.currentProject.days_remaining"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Card -->
+                    <div class="pm_overview_card">
+                        <div class="pm_card_header">
+                            <h3 class="pm_card_title">
+                                <i class="fa fa-bell"></i>
+                                Recent Activity
+                            </h3>
+                        </div>
+                        <div class="pm_card_body">
+                            <div t-if="!state.dashboardData.recent_activity?.length" style="text-align: center; color: #6c757d;">
+                                No recent activity
+                            </div>
+                            <t t-else="">
+                                <t t-foreach="state.dashboardData.recent_activity.slice(0, 5)" t-as="activity" t-key="activity_index">
+                                    <div style="margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid #eee;">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                            <i t-att-class="'fa ' + activity.icon" style="color: #007bff;"></i>
+                                            <strong style="font-size: 0.9rem;" t-esc="activity.title"/>
+                                        </div>
+                                        <div style="font-size: 0.8rem; color: #6c757d; margin-left: 1.5rem;">
+                                            <div t-esc="activity.description"/>
+                                            <div>
+                                                <t t-esc="activity.user"/> • <t t-esc="activity.date"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- No Project Selected -->
+            <div t-if="!state.loading and !state.currentProject"
+                 style="text-align: center; padding: 3rem; color: #6c757d;">
+                <i class="fa fa-project-diagram fa-3x" style="margin-bottom: 1rem; opacity: 0.5;"></i>
+                <h3>Select a project to view dashboard</h3>
+                <p>Choose a project from the dropdown above to see detailed insights.</p>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Project Material Inventory Tree View -->
+    <record id="view_project_material_tree" model="ir.ui.view">
+        <field name="name">project.material.tree</field>
+        <field name="model">construction.project.material</field>
+        <field name="arch" type="xml">
+            <tree string="Project Material Inventory" decoration-danger="status == 'out_of_stock'" decoration-warning="status == 'low_stock'" decoration-success="status == 'in_stock'">
+                <field name="project_id"/>
+                <field name="material_name"/>
+                <field name="category_id"/>
+                <field name="total_delivered" sum="Total Delivered"/>
+                <field name="total_consumed" sum="Total Consumed"/>
+                <field name="current_stock" sum="Current Stock"/>
+                <field name="total_cost" sum="Total Cost"/>
+                <field name="status" widget="badge" decoration-danger="status == 'out_of_stock'" decoration-warning="status == 'low_stock'" decoration-success="status == 'in_stock'"/>
+                <field name="last_delivery_date"/>
+                <field name="delivery_count"/>
+                <button name="action_view_deliveries" type="object" icon="fa-truck" title="View Deliveries"/>
+                <button name="action_add_delivery" type="object" icon="fa-plus" title="Add Delivery"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Project Material Inventory Kanban View -->
+    <record id="view_project_material_kanban" model="ir.ui.view">
+        <field name="name">project.material.kanban</field>
+        <field name="model">construction.project.material</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="material_name"/>
+                <field name="project_id"/>
+                <field name="category_id"/>
+                <field name="current_stock"/>
+                <field name="total_cost"/>
+                <field name="status"/>
+                <field name="delivery_count"/>
+                <field name="last_delivery_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click" t-att-class="record.status.raw_value === 'out_of_stock' ? 'border-danger' : record.status.raw_value === 'low_stock' ? 'border-warning' : 'border-success'">
+                            <div class="o_kanban_record_top mb8">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <t t-esc="record.material_name.value"/>
+                                    </strong>
+                                    <br/>
+                                    <small class="text-muted">
+                                        <t t-esc="record.project_id.value"/>
+                                    </small>
+                                    <br/>
+                                    <span class="badge badge-secondary">
+                                        <t t-esc="record.category_id.value"/>
+                                    </span>
+                                </div>
+                                <div class="o_kanban_record_top_right">
+                                    <span class="badge" t-att-class="record.status.raw_value === 'out_of_stock' ? 'badge-danger' : record.status.raw_value === 'low_stock' ? 'badge-warning' : 'badge-success'">
+                                        <t t-esc="record.status.value"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="row mb4">
+                                    <div class="col-6">
+                                        <strong>Stock:</strong>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <strong><t t-esc="record.current_stock.value"/></strong>
+                                    </div>
+                                </div>
+                                <div class="row mb4">
+                                    <div class="col-6">
+                                        <strong>Total Cost:</strong>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <strong>$<t t-esc="record.total_cost.value"/></strong>
+                                    </div>
+                                </div>
+                                <div class="text-muted">
+                                    <i class="fa fa-truck"/> <t t-esc="record.delivery_count.value"/> deliveries
+                                </div>
+                                <div class="text-muted" t-if="record.last_delivery_date.value">
+                                    <i class="fa fa-calendar"/> Last: <t t-esc="record.last_delivery_date.value"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom mt8">
+                                <div class="oe_kanban_bottom_left">
+                                    <button name="action_view_deliveries" type="object" class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-truck"/> Deliveries
+                                    </button>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <button name="action_add_delivery" type="object" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-plus"/> Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Project Material Form View -->
+    <record id="view_project_material_form" model="ir.ui.view">
+        <field name="name">project.material.form</field>
+        <field name="model">construction.project.material</field>
+        <field name="arch" type="xml">
+            <form string="Project Material Inventory" create="false" edit="false">
+                <header>
+                    <button name="action_add_delivery" string="Add Delivery" type="object" class="btn-primary"/>
+                    <button name="action_view_deliveries" string="View All Deliveries" type="object" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="material_name" readonly="1"/>
+                        </h1>
+                        <h3>
+                            <field name="project_id" readonly="1"/>
+                        </h3>
+                    </div>
+
+                    <group>
+                        <group string="Material Info">
+                            <field name="category_id" readonly="1"/>
+                            <field name="status" widget="badge"/>
+                        </group>
+                        <group string="Inventory Summary">
+                            <field name="total_delivered" readonly="1"/>
+                            <field name="total_consumed" readonly="1"/>
+                            <field name="current_stock" readonly="1"/>
+                            <field name="total_cost" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Last Activity">
+                            <field name="last_delivery_date" readonly="1"/>
+                            <field name="last_consumption_date" readonly="1"/>
+                        </group>
+                        <group string="Statistics">
+                            <field name="delivery_count" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Recent Deliveries">
+                            <field name="delivery_ids" readonly="1">
+                                <tree string="Deliveries" limit="10">
+                                    <field name="delivery_date"/>
+                                    <field name="quantity"/>
+                                    <field name="unit"/>
+                                    <field name="unit_price"/>
+                                    <field name="total_cost"/>
+                                    <field name="supplier_name"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_project_material_search" model="ir.ui.view">
+        <field name="name">project.material.search</field>
+        <field name="model">construction.project.material</field>
+        <field name="arch" type="xml">
+            <search string="Search Project Materials">
+                <field name="material_name" string="Material" filter_domain="[('material_name', 'ilike', self)]"/>
+                <field name="project_id" string="Project"/>
+                <field name="category_id" string="Category"/>
+
+                <filter string="In Stock" name="filter_in_stock" domain="[('status', '=', 'in_stock')]"/>
+                <filter string="Low Stock" name="filter_low_stock" domain="[('status', '=', 'low_stock')]"/>
+                <filter string="Out of Stock" name="filter_out_stock" domain="[('status', '=', 'out_of_stock')]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_project_material_inventory" model="ir.actions.act_window">
+        <field name="name">Project Material Inventory</field>
+        <field name="res_model">construction.project.material</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_filter_in_stock': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No materials tracked yet!
+            </p>
+            <p>
+                Material inventory will automatically populate when you add deliveries to projects.
+                Start by adding material deliveries to see your project inventory here.
+            </p>
+        </field>
+    </record>
+</odoo>

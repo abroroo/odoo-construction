@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Material Receipt Form View -->
+    <record id="view_material_receipt_form" model="ir.ui.view">
+        <field name="name">material.receipt.form</field>
+        <field name="model">construction.material.receipt</field>
+        <field name="arch" type="xml">
+            <form string="Material Receipt">
+                <header>
+                    <button name="action_mark_received" string="Mark as Received" type="object" class="btn-primary" invisible="receipt_status != 'draft'"/>
+                    <button name="action_quality_check" string="Quality Check" type="object" class="btn-secondary" invisible="receipt_status != 'received'"/>
+                    <button name="action_accept_material" string="Accept Material" type="object" class="btn-success" invisible="receipt_status != 'quality_check'"/>
+                    <button name="action_reject_material" string="Reject Material" type="object" class="btn-danger" invisible="receipt_status != 'quality_check'"/>
+                    <field name="receipt_status" widget="statusbar" statusbar_visible="draft,received,quality_check,accepted"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Delivery Information">
+                            <field name="warehouse_id" required="1"/>
+                            <field name="project_id" required="1" options="{'no_create': True}" placeholder="Select project..."/>
+                            <field name="material_id" required="1"/>
+                            <field name="receipt_date" required="1"/>
+                            <field name="delivery_reference"/>
+                        </group>
+                        <group string="Quantity &amp; Costing">
+                            <field name="quantity" required="1"/>
+                            <field name="unit_of_measure" readonly="1"/>
+                            <field name="unit_cost" required="1"/>
+                            <field name="total_cost" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Supplier Information">
+                            <field name="supplier_id" required="1"/>
+                            <field name="supplier_contact"/>
+                            <field name="delivery_truck"/>
+                            <field name="purchase_order_ref"/>
+                        </group>
+                        <group string="Receipt Details">
+                            <field name="received_by_id" required="1"/>
+                            <field name="quality_check"/>
+                            <field name="damaged_quantity"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Storage">
+                            <field name="storage_location"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Notes">
+                            <group>
+                                <field name="condition_notes" placeholder="Material condition notes..."/>
+                                <field name="storage_notes" placeholder="Storage instructions..."/>
+                                <field name="receipt_notes" placeholder="Additional receipt notes..."/>
+                            </group>
+                        </page>
+                        <page string="Photos">
+                            <field name="delivery_photos"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Material Receipt Tree View -->
+    <record id="view_material_receipt_tree" model="ir.ui.view">
+        <field name="name">material.receipt.tree</field>
+        <field name="model">construction.material.receipt</field>
+        <field name="arch" type="xml">
+            <tree string="Material Receipts" decoration-success="receipt_status == 'accepted'" decoration-info="receipt_status == 'received'" decoration-muted="receipt_status == 'rejected'">
+                <field name="receipt_date"/>
+                <field name="warehouse_id"/>
+                <field name="project_id"/>
+                <field name="material_id"/>
+                <field name="supplier_id"/>
+                <field name="quantity"/>
+                <field name="unit_of_measure"/>
+                <field name="total_cost" sum="Total Cost"/>
+                <field name="receipt_status" widget="badge" decoration-success="receipt_status == 'accepted'" decoration-info="receipt_status == 'received'"/>
+                <field name="quality_check"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_material_receipts" model="ir.actions.act_window">
+        <field name="name">Material Receipts</field>
+        <field name="res_model">construction.material.receipt</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No material receipts recorded yet!
+            </p>
+            <p>
+                Material receipts are created when suppliers deliver materials to warehouses.
+            </p>
+        </field>
+    </record>
+</odoo>

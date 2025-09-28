@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add Import menu to Construction Budget -->
+    <menuitem id="menu_construction_smeta_import"
+              name="Import Smeta"
+              parent="construction_budget.menu_construction_budget_management"
+              action="action_smeta_import_wizard"
+              sequence="30"/>
+
+    <!-- Import Logs menu -->
+    <menuitem id="menu_construction_smeta_import_logs"
+              name="Import Logs"
+              parent="construction_budget.menu_construction_budget_management"
+              action="action_smeta_import_logs"
+              sequence="40"/>
+
+    <!-- Template menu in Configuration -->
+    <menuitem id="menu_construction_smeta_template"
+              name="Smeta Template"
+              parent="construction_budget.menu_construction_budget_config"
+              action="action_smeta_import_wizard"
+              sequence="20"/>
+
+</odoo>

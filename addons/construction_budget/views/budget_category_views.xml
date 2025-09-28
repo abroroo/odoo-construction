@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Budget Category Form View -->
+    <record id="view_budget_category_form" model="ir.ui.view">
+        <field name="name">construction.budget.category.form</field>
+        <field name="model">construction.budget.category</field>
+        <field name="arch" type="xml">
+            <form string="Budget Category">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Category Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="parent_id"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="color" widget="color"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Statistics">
+                        <group>
+                            <field name="total_budget" widget="monetary"/>
+                            <field name="total_spent" widget="monetary"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Describe what this budget category covers..."/>
+                        </page>
+                        <page string="Sub-categories" name="subcategories">
+                            <field name="child_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="total_budget" widget="monetary"/>
+                                    <field name="total_spent" widget="monetary"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Budget Category Tree View -->
+    <record id="view_budget_category_tree" model="ir.ui.view">
+        <field name="name">construction.budget.category.tree</field>
+        <field name="model">construction.budget.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="parent_id"/>
+                <field name="total_budget" widget="monetary"/>
+                <field name="total_spent" widget="monetary"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_budget_categories" model="ir.actions.act_window">
+        <field name="name">Budget Categories</field>
+        <field name="res_model">construction.budget.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first budget category!
+            </p>
+            <p>
+                Organize your construction project expenses by creating categories
+                like Materials, Labor, Equipment, and Overhead.
+            </p>
+        </field>
+    </record>
+
+</odoo>

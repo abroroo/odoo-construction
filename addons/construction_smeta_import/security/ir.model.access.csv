@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_smeta_import_log_user,smeta.import.log.user,model_construction_smeta_import_log,base.group_user,1,1,1,0
+access_smeta_import_log_manager,smeta.import.log.manager,model_construction_smeta_import_log,base.group_system,1,1,1,1
+access_smeta_processor_user,smeta.processor.user,model_construction_smeta_processor,base.group_user,1,1,1,1
+access_smeta_import_wizard_user,smeta.import.wizard.user,model_construction_smeta_import_wizard,base.group_user,1,1,1,1
+access_smeta_import_preview_user,smeta.import.preview.user,model_construction_smeta_import_preview,base.group_user,1,1,1,1
+access_smeta_template_user,smeta.template.user,model_construction_smeta_template,base.group_user,1,1,1,1

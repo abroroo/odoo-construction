@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- PM Dashboard Kanban View -->
+    <record id="view_pm_dashboard_kanban" model="ir.ui.view">
+        <field name="name">construction.pm.dashboard.kanban</field>
+        <field name="model">construction.pm.dashboard</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard o_pm_dashboard_kanban" create="false" edit="false">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="project_id"/>
+                <field name="last_refresh"/>
+                <field name="project_name"/>
+                <field name="total_tasks"/>
+                <field name="todo_count"/>
+                <field name="progress_count"/>
+                <field name="done_count"/>
+                <field name="progress_percentage"/>
+                <field name="budget_allocated"/>
+                <field name="budget_spent"/>
+                <field name="budget_remaining"/>
+                <field name="budget_percentage"/>
+                <field name="over_budget"/>
+                <field name="team_size"/>
+                <field name="active_workers"/>
+                <field name="pending_approvals"/>
+                <field name="dashboard_status"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="container-fluid o_kanban_card_content">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h3 class="text-center mb-3">
+                                        <i class="fa fa-dashboard text-primary"></i>
+                                        Project Manager Dashboard
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <!-- Project Selection and Load Button -->
+                            <div class="row mb-4">
+                                <div class="col-lg-9 col-md-8 mb-3">
+                                    <div class="alert alert-info">
+                                        <h4><i class="fa fa-info-circle"></i> Dashboard Status</h4>
+                                        <p class="mb-2" t-esc="record.dashboard_status.value"/>
+                                        <t t-if="record.project_id.value">
+                                            <p class="mb-0"><strong>Selected Project:</strong> <span t-esc="record.project_id.value"/></p>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 mb-3 d-flex align-items-center">
+                                    <button type="object" name="action_load_dashboard_data" class="btn btn-primary btn-lg w-100" style="min-height: 60px;">
+                                        <i class="fa fa-refresh"></i><br/>
+                                        <span>Load Dashboard Data</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Dashboard Data Cards -->
+                            <t t-if="record.project_name.value">
+                                <!-- Project Header -->
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <div class="card border-0 bg-light">
+                                            <div class="card-body text-center py-3">
+                                                <h2 class="mb-1 text-primary" t-esc="record.project_name.value"/>
+                                                <div class="progress mx-auto mb-2" style="width: 300px; height: 8px;">
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                         t-attf-style="width: {{record.progress_percentage.value}}%">
+                                                    </div>
+                                                </div>
+                                                <p class="mb-0 text-muted">
+                                                    <strong t-esc="record.progress_percentage.value"/>% Complete •
+                                                    <span t-esc="record.total_tasks.value"/> Total Tasks
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Main Dashboard Cards -->
+                                <div class="row mb-4">
+                                    <!-- Project Progress Card -->
+                                    <div class="col-xl-4 col-lg-6 mb-4">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-header bg-primary text-white">
+                                                <h5 class="mb-0"><i class="fa fa-tasks me-2"></i> Task Progress</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center mb-3">
+                                                    <div class="col-4">
+                                                        <div class="border-end">
+                                                            <h3 class="text-primary mb-1" t-esc="record.todo_count.value"/>
+                                                            <small class="text-muted">To Do</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="border-end">
+                                                            <h3 class="text-warning mb-1" t-esc="record.progress_count.value"/>
+                                                            <small class="text-muted">In Progress</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <h3 class="text-success mb-1" t-esc="record.done_count.value"/>
+                                                        <small class="text-muted">Completed</small>
+                                                    </div>
+                                                </div>
+                                                <div class="progress" style="height: 10px;">
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                         t-attf-style="width: {{record.progress_percentage.value}}%">
+                                                    </div>
+                                                </div>
+                                                <div class="text-center mt-2">
+                                                    <small class="text-muted">Overall Progress: <strong><span t-esc="record.progress_percentage.value"/>%</strong></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Budget Status Card -->
+                                    <div class="col-xl-4 col-lg-6 mb-4">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-header bg-success text-white">
+                                                <h5 class="mb-0"><i class="fa fa-dollar-sign me-2"></i> Budget Status</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="progress mb-3" style="height: 10px;">
+                                                    <div t-attf-class="progress-bar {{record.over_budget.value and 'bg-danger' or 'bg-success'}}"
+                                                         role="progressbar"
+                                                         t-attf-style="width: {{record.budget_percentage.value}}%">
+                                                    </div>
+                                                </div>
+                                                <div class="row text-center mb-3">
+                                                    <div class="col-12 mb-2">
+                                                        <h4 class="mb-1" t-attf-class="{{record.over_budget.value and 'text-danger' or 'text-success'}}">
+                                                            <span t-esc="record.budget_percentage.value"/>% Used
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-sm table-borderless">
+                                                    <tr>
+                                                        <td><strong>Allocated:</strong></td>
+                                                        <td class="text-end">$<span t-esc="record.budget_allocated.value"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Spent:</strong></td>
+                                                        <td class="text-end">$<span t-esc="record.budget_spent.value"/></td>
+                                                    </tr>
+                                                    <tr class="border-top">
+                                                        <td><strong>Remaining:</strong></td>
+                                                        <td class="text-end"><strong>$<span t-esc="record.budget_remaining.value"/></strong></td>
+                                                    </tr>
+                                                </table>
+                                                <t t-if="record.over_budget.value">
+                                                    <div class="alert alert-danger p-2 mt-2">
+                                                        <i class="fa fa-exclamation-triangle"></i> Over Budget!
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Team Overview Card -->
+                                    <div class="col-xl-4 col-lg-12 mb-4">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-header bg-info text-white">
+                                                <h5 class="mb-0"><i class="fa fa-users me-2"></i> Team Overview</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center mb-3">
+                                                    <div class="col-6">
+                                                        <div class="border-end">
+                                                            <h3 class="text-info mb-1" t-esc="record.team_size.value"/>
+                                                            <small class="text-muted">Total Team Members</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <h3 class="text-success mb-1" t-esc="record.active_workers.value"/>
+                                                        <small class="text-muted">Active Workers</small>
+                                                    </div>
+                                                </div>
+                                                <t t-if="record.pending_approvals.value">
+                                                    <div class="alert alert-warning p-2 mb-3">
+                                                        <i class="fa fa-clock me-1"></i>
+                                                        <strong t-esc="record.pending_approvals.value"/> pending expense approvals
+                                                    </div>
+                                                </t>
+                                                <div class="text-center">
+                                                    <small class="text-muted">
+                                                        Last updated: <br/>
+                                                        <strong t-esc="record.last_refresh.value"/>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions Row -->
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-dark text-white">
+                                                <h5 class="mb-0"><i class="fa fa-link me-2"></i> Quick Actions</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row g-3">
+                                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                                        <a href="/web#menu_id=86&amp;action=105" class="btn btn-outline-primary w-100 p-3">
+                                                            <i class="fa fa-tasks fa-2x d-block mb-2"></i>
+                                                            <strong>View Projects</strong><br/>
+                                                            <small>Manage all projects</small>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                                        <a href="/web#menu_id=151&amp;action=199" class="btn btn-outline-success w-100 p-3">
+                                                            <i class="fa fa-dollar-sign fa-2x d-block mb-2"></i>
+                                                            <strong>View Budget</strong><br/>
+                                                            <small>Budget management</small>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                                        <a href="/web#menu_id=153&amp;action=hr_expense.hr_expense_actions_all" class="btn btn-outline-warning w-100 p-3">
+                                                            <i class="fa fa-receipt fa-2x d-block mb-2"></i>
+                                                            <strong>View Expenses</strong><br/>
+                                                            <small>Expense tracking</small>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                                        <a href="/web#action=project.open_task_type_form" class="btn btn-outline-info w-100 p-3">
+                                                            <i class="fa fa-cogs fa-2x d-block mb-2"></i>
+                                                            <strong>Task Settings</strong><br/>
+                                                            <small>Configure workflow</small>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Instructions -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><i class="fa fa-lightbulb"></i> How to Use Dashboard</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <ol>
+                                                <li><strong>Create Projects:</strong> Go to Projects menu and create your construction projects</li>
+                                                <li><strong>Add Tasks:</strong> Create tasks within your projects</li>
+                                                <li><strong>Set Budgets:</strong> Use Construction Budget to allocate funds</li>
+                                                <li><strong>Track Expenses:</strong> Record expenses against your projects</li>
+                                                <li><strong>Monitor Progress:</strong> Return to this dashboard for overview</li>
+                                            </ol>
+                                            <div class="alert alert-success mt-3">
+                                                <strong>Next Steps:</strong> Create a project first, then add some tasks to see the dashboard populate with data.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

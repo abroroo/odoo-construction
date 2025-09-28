@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Mobile Expense Tree View -->
+    <record id="view_mobile_expense_tree" model="ir.ui.view">
+        <field name="name">construction.mobile.expense.tree</field>
+        <field name="model">construction.mobile.expense</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="amount"/>
+                <field name="date"/>
+                <field name="project_id"/>
+                <field name="task_id"/>
+                <field name="material_type"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Mobile Expense Form View -->
+    <record id="view_mobile_expense_form" model="ir.ui.view">
+        <field name="name">construction.mobile.expense.form</field>
+        <field name="model">construction.mobile.expense</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit_expense"
+                            type="object"
+                            string="Submit Expense"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved"/>
+                </header>
+                <sheet class="o_mobile_expense_form">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Expense description..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Basic Information">
+                            <field name="amount" widget="monetary"/>
+                            <field name="date"/>
+                            <field name="material_type"/>
+                        </group>
+                        <group string="Project &amp; Task">
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="task_id"
+                                   domain="[('project_id', '=', project_id), ('user_ids', 'in', [uid])]"
+                                   options="{'no_create': True}"/>
+                        </group>
+                    </group>
+
+                    <group string="Receipt">
+                        <field name="receipt_image" widget="image" class="oe_avatar"/>
+                        <field name="receipt_filename" invisible="1"/>
+                    </group>
+
+                    <group string="User Information">
+                        <field name="user_id" readonly="1"/>
+                        <field name="employee_id" readonly="1"/>
+                    </group>
+
+                    <group string="HR Expense Link" invisible="state == 'draft'">
+                        <field name="expense_id" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Mobile Expense Kanban View -->
+    <record id="view_mobile_expense_kanban" model="ir.ui.view">
+        <field name="name">construction.mobile.expense.kanban</field>
+        <field name="model">construction.mobile.expense</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile o_mobile_expense_kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="amount"/>
+                <field name="date"/>
+                <field name="project_id"/>
+                <field name="task_id"/>
+                <field name="material_type"/>
+                <field name="state"/>
+                <field name="receipt_image"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_mobile_expense_card">
+                            <div class="o_kanban_image">
+                                <img t-if="record.receipt_image.raw_value"
+                                     t-att-src="kanban_image('construction.mobile.expense', 'receipt_image', record.id.raw_value)"
+                                     alt="Receipt"/>
+                                <i t-else="" class="fa fa-receipt fa-2x"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="project_id"/> - <field name="task_id"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_dropdown_kanban dropdown">
+                                        <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a type="edit" class="dropdown-item">Edit</a>
+                                            <a type="delete" class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="o_mobile_expense_details">
+                                        <div class="o_expense_amount">
+                                            <strong><field name="amount" widget="monetary"/></strong>
+                                        </div>
+                                        <div class="o_expense_material">
+                                            <i class="fa fa-tag"/> <field name="material_type"/>
+                                        </div>
+                                        <div class="o_expense_date">
+                                            <i class="fa fa-calendar"/> <field name="date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span t-attf-class="badge badge-#{record.state.raw_value === 'draft' ? 'secondary' : record.state.raw_value === 'submitted' ? 'warning' : record.state.raw_value === 'approved' ? 'success' : 'danger'}">
+                                            <field name="state"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Mobile Expense Action -->
+    <record id="action_mobile_expense" model="ir.actions.act_window">
+        <field name="name">Mobile Expenses</field>
+        <field name="res_model">construction.mobile.expense</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="view_mobile_expense_kanban"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No expenses recorded yet!
+            </p>
+            <p>
+                Create your first expense entry by clicking the "New" button.
+                You can add receipt photos and link expenses to specific tasks.
+            </p>
+        </field>
+    </record>
+
+    <!-- Add to menu -->
+    <menuitem id="menu_mobile_expenses"
+              name="Expenses"
+              parent="menu_mobile_construction_root"
+              action="action_mobile_expense"
+              sequence="30"/>
+</odoo>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Create Construction Category -->
+    <record id="module_category_construction" model="ir.module.category">
+        <field name="name">Construction</field>
+        <field name="description">Construction Management</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Warehouse User Groups -->
+    <record id="group_warehouse_user" model="res.groups">
+        <field name="name">Warehouse User</field>
+        <field name="category_id" ref="module_category_construction"/>
+        <field name="comment">Basic warehouse access - view stock, consume materials</field>
+    </record>
+
+    <record id="group_warehouse_manager" model="res.groups">
+        <field name="name">Warehouse Manager</field>
+        <field name="category_id" ref="module_category_construction"/>
+        <field name="implied_ids" eval="[(4, ref('group_warehouse_user'))]"/>
+        <field name="comment">Full warehouse management - create warehouses, manage stock, receive materials</field>
+    </record>
+
+    <record id="group_supplier_portal" model="res.groups">
+        <field name="name">Supplier Portal Access</field>
+        <field name="category_id" ref="module_category_construction"/>
+        <field name="comment">Portal access for suppliers to add materials to warehouses</field>
+    </record>
+
+    <!-- Site Manager Role -->
+    <record id="group_site_manager" model="res.groups">
+        <field name="name">Site Manager</field>
+        <field name="category_id" ref="module_category_construction"/>
+        <field name="implied_ids" eval="[(4, ref('group_warehouse_user'))]"/>
+        <field name="comment">Site managers can consume materials and view project warehouses</field>
+    </record>
+
+    <!-- Record Rules for Project-based Access -->
+    <!-- Note: Administrators (base.group_system) are exempt from record rules by default -->
+
+    <!-- Project Warehouse Rules -->
+    <record id="rule_warehouse_site_manager" model="ir.rule">
+        <field name="name">Site Manager: Own Project Warehouses Only</field>
+        <field name="model_id" ref="model_construction_project_warehouse"/>
+        <field name="domain_force">[('project_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_site_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_warehouse_manager_all" model="ir.rule">
+        <field name="name">Warehouse Manager: All Warehouses</field>
+        <field name="model_id" ref="model_construction_project_warehouse"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_warehouse_manager')), (4, ref('group_warehouse_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Warehouse Stock Rules -->
+    <record id="rule_stock_site_manager" model="ir.rule">
+        <field name="name">Site Manager: Own Project Stock Only</field>
+        <field name="model_id" ref="model_construction_warehouse_stock"/>
+        <field name="domain_force">[('project_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_site_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_stock_warehouse_users" model="ir.rule">
+        <field name="name">Warehouse Users: All Stock</field>
+        <field name="model_id" ref="model_construction_warehouse_stock"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_warehouse_manager')), (4, ref('group_warehouse_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Material Consumption Rules -->
+    <record id="rule_consumption_site_manager" model="ir.rule">
+        <field name="name">Site Manager: Own Project Consumptions</field>
+        <field name="model_id" ref="model_construction_material_consumption"/>
+        <field name="domain_force">[('project_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_site_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_consumption_warehouse_users" model="ir.rule">
+        <field name="name">Warehouse Users: All Consumptions</field>
+        <field name="model_id" ref="model_construction_material_consumption"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_warehouse_manager')), (4, ref('group_warehouse_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Material Receipt Rules -->
+    <record id="rule_receipt_warehouse_users" model="ir.rule">
+        <field name="name">Warehouse Users: All Receipts</field>
+        <field name="model_id" ref="model_construction_material_receipt"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_warehouse_manager')), (4, ref('group_warehouse_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Material Receipt Rules for Suppliers -->
+    <record id="rule_receipt_supplier" model="ir.rule">
+        <field name="name">Supplier: Own Deliveries Only</field>
+        <field name="model_id" ref="model_construction_material_receipt"/>
+        <field name="domain_force">[('supplier_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('group_supplier_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

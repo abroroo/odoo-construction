@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Create Budget Line Form View with Task Integration -->
+    <record id="view_budget_line_form_task_integration" model="ir.ui.view">
+        <field name="name">construction.project.budget.line.form.task.integration</field>
+        <field name="model">construction.project.budget.line</field>
+        <field name="arch" type="xml">
+            <form string="Budget Line">
+                <header>
+                    <!-- Add smart buttons for task actions -->
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_task"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tasks"
+                                invisible="not task_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="task_progress"/>%
+                                </span>
+                                <span class="o_stat_text">Task Progress</span>
+                            </div>
+                        </button>
+
+                        <button name="action_create_task"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-plus-circle"
+                                invisible="task_id">
+                            <span class="o_stat_text">Create Task</span>
+                        </button>
+
+                        <button name="action_view_task_expenses"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-credit-card">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="spent_amount" widget="monetary"/>
+                                </span>
+                                <span class="o_stat_text">Expenses</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="budget_id"/>
+                            <field name="category_id"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                            <field name="unit_price"/>
+                            <field name="budget_amount"/>
+                        </group>
+                    </group>
+
+                    <group string="Actual Costs">
+                        <group>
+                            <field name="spent_amount"/>
+                            <field name="committed_amount"/>
+                            <field name="remaining_amount"/>
+                        </group>
+                        <group>
+                            <field name="progress_percentage" widget="percentage"/>
+                        </group>
+                    </group>
+
+                    <group string="Task Management" name="task_management">
+                        <group>
+                            <field name="task_id"/>
+                            <field name="task_stage"/>
+                            <field name="assignee_id"/>
+                            <field name="has_linked_task"/>
+                        </group>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Enhanced Budget Line Tree View -->
+    <record id="view_budget_line_tree_task_integration" model="ir.ui.view">
+        <field name="name">construction.project.budget.line.tree.task.integration</field>
+        <field name="model">construction.project.budget.line</field>
+        <field name="inherit_id" ref="construction_budget.view_budget_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='progress_percentage']" position="after">
+                <field name="has_linked_task" optional="show"/>
+                <field name="task_stage" optional="show"/>
+                <field name="task_progress" widget="percentage" optional="show"/>
+                <field name="assignee_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Budget Lines with Tasks Action -->
+    <record id="action_budget_lines_with_tasks" model="ir.actions.act_window">
+        <field name="name">Budget Lines with Tasks</field>
+        <field name="res_model">construction.project.budget.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('task_id', '!=', False)]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No budget lines with linked tasks found!
+            </p>
+            <p>
+                Budget lines are automatically linked to project tasks when imported from smeta files.
+                This allows you to track both financial and operational progress.
+            </p>
+        </field>
+    </record>
+
+</odoo>

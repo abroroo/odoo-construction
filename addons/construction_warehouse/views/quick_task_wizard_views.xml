@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Quick Task Creation Wizard Form -->
+    <record id="view_quick_task_wizard_form" model="ir.ui.view">
+        <field name="name">quick.task.wizard.form</field>
+        <field name="model">construction.quick.task.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create New Task">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Create Additional Task</h1>
+                        <p class="text-muted">Create a new task for work not included in the original смета</p>
+                    </div>
+
+                    <group>
+                        <group string="Task Information">
+                            <field name="project_id" readonly="1"/>
+                            <field name="name" placeholder="e.g., Additional concrete work"/>
+                            <field name="estimated_quantity"/>
+                        </group>
+                        <group string="Material Context" invisible="not material_name">
+                            <field name="material_name" readonly="1"/>
+                            <label for="consumption_id" string="For Material Consumption"/>
+                            <div>
+                                <span class="text-muted">This task will be linked to your material consumption</span>
+                            </div>
+                        </group>
+                    </group>
+
+                    <group string="Description">
+                        <field name="description" nolabel="1" placeholder="Describe the additional work that needs to be done..."/>
+                        <div class="text-muted">
+                            <small>This task will help track work not included in the original смета and link it to material consumption.</small>
+                        </div>
+                    </group>
+
+                    <!-- Hidden fields -->
+                    <field name="consumption_id" invisible="1"/>
+                </sheet>
+                <footer>
+                    <button name="action_create_task" string="Create Task" type="object" class="btn-primary"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

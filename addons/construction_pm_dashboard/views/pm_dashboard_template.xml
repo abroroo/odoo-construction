@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pm_dashboard_template" name="PM Dashboard">
+        <html>
+            <head>
+                <title t-esc="page_title"/>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+                <link rel="stylesheet" href="/construction_pm_dashboard/static/src/css/pm_dashboard.css"/>
+                <script src="/construction_pm_dashboard/static/src/js/pm_dashboard_simple.js"></script>
+            </head>
+            <body>
+
+            <div class="container-fluid pm_dashboard_container">
+                <!-- Header -->
+                <div class="pm_dashboard_header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1>Project Manager Dashboard</h1>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pm_project_selector">
+                                <select class="form-control pm_project_dropdown" id="projectSelector">
+                                    <option value="">Select Project...</option>
+                                    <t t-if="dashboard_data.get('projects')" t-foreach="dashboard_data['projects']" t-as="project">
+                                        <option t-att-value="project['id']" t-esc="project['name']"/>
+                                    </t>
+                                </select>
+                                <button class="btn btn-success pm_refresh_btn" id="refreshBtn">
+                                    <i class="fa fa-refresh"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Project Info -->
+                <t t-if="dashboard_data.get('current_project')">
+                    <t t-set="project" t-value="dashboard_data['current_project']"/>
+
+                    <!-- Project Header -->
+                    <div class="alert alert-info">
+                        <h3 t-esc="project.get('name', 'No Project Selected')"/>
+                        <p t-if="project.get('description')" t-esc="project['description']"/>
+                    </div>
+
+                    <!-- Overview Cards -->
+                    <div class="row pm_overview_grid">
+
+                        <!-- Project Progress Card -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card pm_overview_card">
+                                <div class="card-header pm_card_header">
+                                    <h5><i class="fa fa-tasks"></i> Project Progress</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="pm_stat_row">
+                                        <span>Completion:</span>
+                                        <strong t-esc="str(project.get('progress_percentage', 0)) + '%'"/>
+                                    </div>
+                                    <div class="progress pm_progress_bar">
+                                        <div class="progress-bar bg-success"
+                                             t-att-style="'width: ' + str(project.get('progress_percentage', 0)) + '%'"/>
+                                    </div>
+
+                                    <div class="pm_stat_row">
+                                        <span>Total Tasks:</span>
+                                        <strong t-esc="project.get('total_tasks', 0)"/>
+                                    </div>
+                                    <div class="pm_stat_row">
+                                        <span>To Do:</span>
+                                        <strong t-esc="project.get('todo_count', 0)"/>
+                                    </div>
+                                    <div class="pm_stat_row">
+                                        <span>In Progress:</span>
+                                        <strong t-esc="project.get('progress_count', 0)"/>
+                                    </div>
+                                    <div class="pm_stat_row">
+                                        <span>Done:</span>
+                                        <strong t-esc="project.get('done_count', 0)"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Budget Status Card -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card pm_overview_card">
+                                <div class="card-header pm_card_header">
+                                    <h5><i class="fa fa-dollar-sign"></i> Budget Status</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="pm_stat_row">
+                                        <span>Budget Used:</span>
+                                        <strong t-esc="str(round(project.get('budget_percentage', 0), 1)) + '%'"/>
+                                    </div>
+                                    <div class="progress pm_progress_bar">
+                                        <div t-att-class="'progress-bar ' + ('bg-danger' if project.get('over_budget') else 'bg-warning' if project.get('budget_percentage', 0) > 80 else 'bg-success')"
+                                             t-att-style="'width: ' + str(min(project.get('budget_percentage', 0), 100)) + '%'"/>
+                                    </div>
+
+                                    <div class="pm_stat_row">
+                                        <span>Allocated:</span>
+                                        <strong t-esc="'$' + str(project.get('budget_allocated', 0))"/>
+                                    </div>
+                                    <div class="pm_stat_row">
+                                        <span>Spent:</span>
+                                        <strong t-esc="'$' + str(project.get('budget_spent', 0))"/>
+                                    </div>
+                                    <div class="pm_stat_row">
+                                        <span>Remaining:</span>
+                                        <strong t-esc="'$' + str(project.get('budget_remaining', 0))"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Overview Card -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card pm_overview_card">
+                                <div class="card-header pm_card_header">
+                                    <h5><i class="fa fa-users"></i> Team Overview</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="pm_stat_row">
+                                        <span>Team Size:</span>
+                                        <strong t-esc="project.get('team_size', 0)"/>
+                                    </div>
+                                    <div class="pm_stat_row">
+                                        <span>Active Workers:</span>
+                                        <strong t-esc="project.get('active_workers', 0)"/>
+                                    </div>
+                                    <div class="pm_stat_row">
+                                        <span>Pending Expenses:</span>
+                                        <strong t-esc="dashboard_data.get('team_overview', {}).get('pending_expense_approvals', 0)"/>
+                                    </div>
+
+                                    <t t-if="project.get('deadline')">
+                                        <div class="pm_stat_row">
+                                            <span>Deadline:</span>
+                                            <strong t-esc="project['deadline']"/>
+                                        </div>
+                                        <div class="pm_stat_row" t-if="project.get('days_remaining') is not None">
+                                            <span>Days Remaining:</span>
+                                            <strong t-att-class="'text-danger' if project.get('days_remaining', 0) &lt; 0 else ''"
+                                                    t-esc="project['days_remaining']"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity Card -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card pm_overview_card">
+                                <div class="card-header pm_card_header">
+                                    <h5><i class="fa fa-bell"></i> Recent Activity</h5>
+                                </div>
+                                <div class="card-body">
+                                    <t t-if="not dashboard_data.get('recent_activity')">
+                                        <p class="text-muted text-center">No recent activity</p>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-foreach="dashboard_data['recent_activity'][:5]" t-as="activity">
+                                            <div class="mb-2 pb-2 border-bottom">
+                                                <div class="d-flex align-items-center mb-1">
+                                                    <i t-att-class="'fa ' + activity.get('icon', 'fa-info')" class="text-primary mr-2"/>
+                                                    <strong class="small" t-esc="activity.get('title', '')"/>
+                                                </div>
+                                                <div class="small text-muted ml-3">
+                                                    <div t-esc="activity.get('description', '')"/>
+                                                    <div>
+                                                        <t t-esc="activity.get('user', '')"/> •
+                                                        <t t-esc="activity.get('date', '')"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Alerts -->
+                    <t t-if="dashboard_data.get('budget_monitor', {}).get('budget_alerts')">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Budget Alerts</h4>
+                                <t t-foreach="dashboard_data['budget_monitor']['budget_alerts']" t-as="alert">
+                                    <div t-att-class="'alert alert-' + alert.get('type', 'info')">
+                                        <i t-att-class="'fa ' + alert.get('icon', 'fa-info-circle')"/>
+                                        <strong t-esc="alert.get('title', '')"/>:
+                                        <t t-esc="alert.get('message', '')"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+
+                </t>
+
+                <!-- No Project Selected -->
+                <t t-if="not dashboard_data.get('current_project')">
+                    <div class="text-center py-5">
+                        <i class="fa fa-project-diagram fa-5x text-muted mb-3"/>
+                        <h3>Select a project to view dashboard</h3>
+                        <p class="text-muted">Choose a project from the dropdown above to see detailed insights.</p>
+                    </div>
+                </t>
+
+            </div>
+
+            </body>
+        </html>
+    </template>
+</odoo>

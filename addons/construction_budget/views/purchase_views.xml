@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit Purchase Order Form View -->
+    <record id="view_purchase_order_form_budget" model="ir.ui.view">
+        <field name="name">purchase.order.form.budget</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[last()]" position="after">
+                <group string="Budget Information" name="budget_info">
+                    <field name="construction_project_id"/>
+                    <field name="total_budget_impact" widget="monetary"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Purchase Order Line Form -->
+    <record id="view_purchase_order_line_form_budget" model="ir.ui.view">
+        <field name="name">purchase.order.line.form.budget</field>
+        <field name="model">purchase.order.line</field>
+        <field name="inherit_id" ref="purchase.purchase_order_line_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[last()]" position="after">
+                <group string="Budget Allocation" name="budget_allocation">
+                    <field name="construction_project_id"/>
+                    <field name="budget_category_id"/>
+                    <field name="budget_line_id"
+                           domain="[('project_id', '=', construction_project_id), ('category_id', '=', budget_category_id)]"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Purchase Order Tree View -->
+    <record id="view_purchase_order_tree_budget" model="ir.ui.view">
+        <field name="name">purchase.order.tree.budget</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="construction_project_id" optional="show"/>
+                <field name="total_budget_impact" widget="monetary" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

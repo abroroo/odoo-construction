@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Warehouse Menu -->
+    <menuitem id="menu_warehouse_root"
+              name="Warehouse"
+              sequence="15"
+              web_icon="construction_warehouse,static/description/icon.png"/>
+
+    <!-- Operations Menus -->
+    <menuitem id="menu_warehouse_operations"
+              name="Operations"
+              parent="menu_warehouse_root"
+              sequence="10"/>
+
+    <menuitem id="menu_project_warehouses"
+              name="Project Warehouses"
+              parent="menu_warehouse_operations"
+              action="action_project_warehouses"
+              sequence="10"/>
+
+    <menuitem id="menu_warehouse_stock"
+              name="Current Stock"
+              parent="menu_warehouse_operations"
+              action="action_warehouse_stock"
+              sequence="20"/>
+
+    <menuitem id="menu_material_receipts"
+              name="Material Receipts"
+              parent="menu_warehouse_operations"
+              action="action_material_receipts"
+              sequence="30"/>
+
+    <menuitem id="menu_material_consumption"
+              name="Material Consumption"
+              parent="menu_warehouse_operations"
+              action="action_material_consumption"
+              sequence="40"/>
+
+    <!-- Site Manager Quick Access -->
+    <menuitem id="menu_site_manager_quick"
+              name="Site Manager"
+              parent="menu_warehouse_root"
+              sequence="20"/>
+
+    <menuitem id="menu_quick_consume"
+              name="Consume Materials"
+              parent="menu_site_manager_quick"
+              action="action_quick_consume_material"
+              sequence="10"/>
+
+    <menuitem id="menu_my_warehouse_stock"
+              name="My Warehouse Stock"
+              parent="menu_site_manager_quick"
+              action="action_my_warehouse_stock"
+              sequence="20"/>
+
+    <!-- Supplier Portal -->
+    <menuitem id="menu_supplier_portal"
+              name="Supplier Portal"
+              parent="menu_warehouse_root"
+              sequence="30"
+              groups="construction_warehouse.group_supplier_portal"/>
+
+    <menuitem id="menu_supplier_deliver"
+              name="Deliver Materials"
+              parent="menu_supplier_portal"
+              action="action_supplier_delivery"
+              sequence="10"/>
+
+    <menuitem id="menu_supplier_deliveries"
+              name="My Deliveries"
+              parent="menu_supplier_portal"
+              action="action_supplier_portal_dashboard"
+              sequence="20"/>
+
+    <menuitem id="menu_supplier_materials"
+              name="Available Materials"
+              parent="menu_supplier_portal"
+              action="action_supplier_materials"
+              sequence="30"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_warehouse_config"
+              name="Configuration"
+              parent="menu_warehouse_root"
+              sequence="90"/>
+
+    <menuitem id="menu_construction_materials"
+              name="Construction Materials"
+              parent="menu_warehouse_config"
+              action="action_construction_materials"
+              sequence="10"/>
+</odoo>

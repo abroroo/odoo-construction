@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit Project Form View to Add Budget Information -->
+    <record id="view_project_project_form_budget" model="ir.ui.view">
+        <field name="name">project.project.form.budget</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <!-- Add budget buttons to button box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_budgets" type="object" class="oe_stat_button" icon="fa-money">
+                    <field name="total_budget" widget="statinfo" string="Total Budget"/>
+                </button>
+                <button name="action_view_budget_analysis" type="object" class="oe_stat_button" icon="fa-bar-chart">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="budget_utilization" widget="percentage"/>
+                        </span>
+                        <span class="o_stat_text">Budget Usage</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- Add budget information tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Budget" name="budget_page">
+                    <group>
+                        <group string="Budget Overview">
+                            <field name="active_budget_id" domain="[('project_id', '=', id)]"/>
+                            <field name="total_budget" widget="monetary"/>
+                            <field name="total_spent" widget="monetary"/>
+                            <field name="total_committed" widget="monetary"/>
+                            <field name="remaining_budget" widget="monetary"/>
+                        </group>
+                        <group string="Budget Status">
+                            <field name="budget_utilization" widget="percentage"/>
+                            <field name="budget_status" widget="badge"
+                                   decoration-success="budget_status == 'good'"
+                                   decoration-warning="budget_status == 'warning'"
+                                   decoration-danger="budget_status == 'danger'"
+                                   decoration-muted="budget_status == 'no_budget'"/>
+                            <field name="budget_alert_threshold" widget="percentage"/>
+                        </group>
+                    </group>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <button name="action_create_budget" type="object" string="Create Budget"
+                                    class="btn-primary" invisible="active_budget_id"/>
+                            <button name="action_view_budgets" type="object" string="View All Budgets"
+                                    class="btn-secondary"/>
+                        </div>
+                    </div>
+
+                    <separator string="Budget Lines"/>
+                    <field name="budget_ids" domain="[('project_id', '=', id)]">
+                        <tree>
+                            <field name="name"/>
+                            <field name="state" widget="badge"/>
+                            <field name="total_budget" widget="monetary"/>
+                            <field name="total_spent" widget="monetary"/>
+                            <field name="remaining_budget" widget="monetary"/>
+                            <field name="budget_utilization" widget="percentage"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+
+            <!-- Add budget status indicators -->
+            <xpath expr="//sheet" position="before">
+                <field name="is_near_budget_limit" invisible="1"/>
+                <field name="is_over_budget" invisible="1"/>
+                <div class="alert alert-warning" role="alert"
+                     invisible="not is_near_budget_limit">
+                    <strong>Budget Alert:</strong> This project is approaching its budget limit.
+                </div>
+                <div class="alert alert-danger" role="alert"
+                     invisible="not is_over_budget">
+                    <strong>Over Budget:</strong> This project has exceeded its budget!
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Project Tree View to Add Budget Columns -->
+    <record id="view_project_project_tree_budget" model="ir.ui.view">
+        <field name="name">project.project.tree.budget</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="total_budget" widget="monetary" optional="show"/>
+                <field name="total_spent" widget="monetary" optional="show"/>
+                <field name="remaining_budget" widget="monetary" optional="show"/>
+                <field name="budget_utilization" widget="percentage" optional="show"/>
+                <field name="budget_status" widget="badge" optional="show"
+                       decoration-success="budget_status == 'good'"
+                       decoration-warning="budget_status == 'warning'"
+                       decoration-danger="budget_status == 'danger'"
+                       decoration-muted="budget_status == 'no_budget'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Budget Status Filter -->
+    <record id="view_project_search_budget" model="ir.ui.view">
+        <field name="name">project.project.search.budget</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="after">
+                <separator/>
+                <filter string="Over Budget" name="over_budget"
+                        domain="[('is_over_budget', '=', True)]"/>
+                <filter string="Near Budget Limit" name="near_limit"
+                        domain="[('is_near_budget_limit', '=', True)]"/>
+                <filter string="No Budget" name="no_budget"
+                        domain="[('budget_status', '=', 'no_budget')]"/>
+                <separator/>
+                <filter string="Active Budgets" name="active_budget"
+                        domain="[('active_budget_id', '!=', False)]"/>
+            </xpath>
+            <xpath expr="//group[@expand='0']" position="inside">
+                <filter string="Budget Status" name="group_budget_status"
+                        context="{'group_by': 'budget_status'}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main Menu -->
+    <menuitem id="menu_construction_budget_main"
+              name="Construction Budget"
+              sequence="30"
+              action="action_project_budget"
+              web_icon="construction_budget,static/description/icon.png"/>
+
+    <!-- Budget Management -->
+    <menuitem id="menu_construction_budget_management"
+              name="Budget Management"
+              parent="menu_construction_budget_main"
+              sequence="10"/>
+
+    <menuitem id="menu_project_budgets"
+              name="Project Budgets"
+              parent="menu_construction_budget_management"
+              action="action_project_budget"
+              sequence="10"/>
+
+    <menuitem id="menu_budget_lines"
+              name="Budget Lines"
+              parent="menu_construction_budget_management"
+              action="action_budget_lines"
+              sequence="20"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_construction_budget_config"
+              name="Configuration"
+              parent="menu_construction_budget_main"
+              sequence="90"/>
+
+    <menuitem id="menu_budget_categories"
+              name="Budget Categories"
+              parent="menu_construction_budget_config"
+              action="action_budget_categories"
+              sequence="10"/>
+
+    <!-- Reports -->
+    <menuitem id="menu_construction_budget_reports"
+              name="Reports"
+              parent="menu_construction_budget_main"
+              sequence="80"/>
+
+    <menuitem id="menu_budget_analysis"
+              name="Budget Analysis"
+              parent="menu_construction_budget_reports"
+              action="action_budget_analysis"
+              sequence="10"/>
+
+</odoo>

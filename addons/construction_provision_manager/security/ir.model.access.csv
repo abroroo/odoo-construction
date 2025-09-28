@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_material_category_user,material.category.user,model_construction_material_category,base.group_user,1,1,1,0
+access_material_category_manager,material.category.manager,model_construction_material_category,project.group_project_manager,1,1,1,1
+access_common_material_user,common.material.user,model_construction_common_material,base.group_user,1,1,1,0
+access_common_material_manager,common.material.manager,model_construction_common_material,project.group_project_manager,1,1,1,1
+access_material_delivery_user,material.delivery.user,model_construction_material_delivery,base.group_user,1,1,1,1
+access_material_delivery_manager,material.delivery.manager,model_construction_material_delivery,project.group_project_manager,1,1,1,1
+access_project_material_user,project.material.user,model_construction_project_material,base.group_user,1,1,0,0
+access_project_material_manager,project.material.manager,model_construction_project_material,project.group_project_manager,1,1,1,1

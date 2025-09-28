@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Material Consumption Form View -->
+    <record id="view_material_consumption_form" model="ir.ui.view">
+        <field name="name">material.consumption.form</field>
+        <field name="model">construction.material.consumption</field>
+        <field name="arch" type="xml">
+            <form string="Material Consumption">
+                <header>
+                    <button name="action_confirm_consumption" string="Confirm Consumption" type="object" class="btn-primary" invisible="consumption_status != 'draft'"/>
+                    <button name="action_complete_consumption" string="Complete" type="object" class="btn-success" invisible="consumption_status != 'confirmed'"/>
+                    <button name="action_cancel_consumption" string="Cancel" type="object" class="btn-secondary" invisible="consumption_status in ['completed', 'cancelled']"/>
+                    <field name="consumption_status" widget="statusbar" statusbar_visible="draft,confirmed,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Consumption Information">
+                            <field name="warehouse_id" required="1"/>
+                            <field name="project_id" required="1" options="{'no_create': True}" placeholder="Select project..."/>
+                            <field name="material_id" required="1"/>
+                            <field name="consumption_date" required="1"/>
+                        </group>
+                        <group string="Quantity Information">
+                            <field name="available_quantity" readonly="1"/>
+                            <field name="quantity" required="1"/>
+                            <field name="unit_of_measure" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Usage Details">
+                            <field name="consumed_by_id" required="1"/>
+                            <field name="task_id" required="1" options="{'no_create': True}" placeholder="Select task for consumption..."/>
+                            <field name="work_location"/>
+                            <field name="consumption_purpose" required="1"/>
+                        </group>
+                        <group string="Costing">
+                            <field name="unit_cost" readonly="1"/>
+                            <field name="total_cost" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Notes">
+                        <field name="consumption_notes" nolabel="1" placeholder="Notes about material usage..."/>
+                    </group>
+
+                    <notebook>
+                        <page string="Photos">
+                            <field name="usage_photos"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Material Consumption Tree View -->
+    <record id="view_material_consumption_tree" model="ir.ui.view">
+        <field name="name">material.consumption.tree</field>
+        <field name="model">construction.material.consumption</field>
+        <field name="arch" type="xml">
+            <tree string="Material Consumptions" decoration-success="consumption_status == 'completed'" decoration-info="consumption_status == 'confirmed'">
+                <field name="consumption_date"/>
+                <field name="warehouse_id"/>
+                <field name="project_id"/>
+                <field name="material_id"/>
+                <field name="consumed_by_id"/>
+                <field name="quantity"/>
+                <field name="unit_of_measure"/>
+                <field name="consumption_purpose"/>
+                <field name="task_id"/>
+                <field name="total_cost" sum="Total Cost"/>
+                <field name="consumption_status" widget="badge" decoration-success="consumption_status == 'completed'" decoration-info="consumption_status == 'confirmed'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Quick Consume Form -->
+    <record id="view_quick_consume_form" model="ir.ui.view">
+        <field name="name">quick.consume.form</field>
+        <field name="model">construction.material.consumption</field>
+        <field name="arch" type="xml">
+            <form string="Quick Consume Material">
+                <sheet>
+                    <div class="oe_title">
+                        <h2>Russian Spec: Task-First Material Consumption</h2>
+                        <p class="text-muted">1. Select смета Task → 2. Choose Material → 3. Consume</p>
+                    </div>
+
+                    <!-- STEP 1: Task Selection (REQUIRED FIRST) -->
+                    <group string="Step 1: Select смета Task (Required)">
+                        <field name="warehouse_id" required="1" options="{'no_create': True}"/>
+                        <field name="project_id" readonly="1"/>
+                        <field name="task_id" required="1" options="{'no_create': True}" placeholder="Choose смета task first..."/>
+                        <field name="work_location" placeholder="Specific work location (e.g., Block A, Left Wall)"/>
+
+                        <!-- Create New Task Button -->
+                        <div class="alert alert-info" role="alert" invisible="task_id">
+                            <strong>Task not found?</strong> If the work is not in the original смета, create a new additional task:
+                            <br/>
+                            <button name="action_create_new_task" string="Create New Task" type="object" class="btn-warning mt-2" icon="fa-plus"/>
+                        </div>
+                    </group>
+
+                    <!-- STEP 2: Material Selection -->
+                    <group string="Step 2: Select Material for Task">
+                        <field name="material_id" required="1" options="{'no_create': True}"/>
+                        <field name="available_quantity" readonly="1"/>
+                        <field name="consumption_purpose" required="1"/>
+                    </group>
+
+                    <!-- STEP 3: Consumption Details -->
+                    <group string="Step 3: Consumption Quantity">
+                        <field name="quantity" required="1"/>
+                        <field name="unit_of_measure" readonly="1"/>
+                    </group>
+
+                    <group>
+                        <field name="consumption_notes" nolabel="1" placeholder="Usage notes..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm_consumption" string="Consume Material" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_material_consumption" model="ir.actions.act_window">
+        <field name="name">Material Consumption</field>
+        <field name="res_model">construction.material.consumption</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No material consumption recorded yet!
+            </p>
+            <p>
+                Track when site managers consume materials from warehouse stock for construction tasks.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_quick_consume_material" model="ir.actions.act_window">
+        <field name="name">Quick Consume Material</field>
+        <field name="res_model">construction.material.consumption</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_quick_consume_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

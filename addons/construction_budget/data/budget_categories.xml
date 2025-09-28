@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Main Budget Categories -->
+        <record id="budget_category_materials" model="construction.budget.category">
+            <field name="name">Materials</field>
+            <field name="code">MAT</field>
+            <field name="sequence">10</field>
+            <field name="color">2</field>
+            <field name="description">Construction materials including concrete, steel, lumber, etc.</field>
+        </record>
+
+        <record id="budget_category_labor" model="construction.budget.category">
+            <field name="name">Labor</field>
+            <field name="code">LAB</field>
+            <field name="sequence">20</field>
+            <field name="color">3</field>
+            <field name="description">Labor costs including wages, contractors, subcontractors</field>
+        </record>
+
+        <record id="budget_category_equipment" model="construction.budget.category">
+            <field name="name">Equipment</field>
+            <field name="code">EQP</field>
+            <field name="sequence">30</field>
+            <field name="color">5</field>
+            <field name="description">Equipment rental, machinery, tools</field>
+        </record>
+
+        <record id="budget_category_overhead" model="construction.budget.category">
+            <field name="name">Overhead</field>
+            <field name="code">OVH</field>
+            <field name="sequence">40</field>
+            <field name="color">8</field>
+            <field name="description">Project overhead, management, utilities, insurance</field>
+        </record>
+
+        <record id="budget_category_permits" model="construction.budget.category">
+            <field name="name">Permits &amp; Fees</field>
+            <field name="code">PER</field>
+            <field name="sequence">50</field>
+            <field name="color">10</field>
+            <field name="description">Building permits, inspections, legal fees</field>
+        </record>
+
+        <!-- Material Subcategories -->
+        <record id="budget_category_concrete" model="construction.budget.category">
+            <field name="name">Concrete &amp; Masonry</field>
+            <field name="code">CON</field>
+            <field name="parent_id" ref="budget_category_materials"/>
+            <field name="sequence">11</field>
+            <field name="color">2</field>
+            <field name="description">Concrete, cement, blocks, masonry materials</field>
+        </record>
+
+        <record id="budget_category_steel" model="construction.budget.category">
+            <field name="name">Steel &amp; Metal</field>
+            <field name="code">STL</field>
+            <field name="parent_id" ref="budget_category_materials"/>
+            <field name="sequence">12</field>
+            <field name="color">2</field>
+            <field name="description">Steel beams, rebar, metal components</field>
+        </record>
+
+        <record id="budget_category_lumber" model="construction.budget.category">
+            <field name="name">Lumber &amp; Wood</field>
+            <field name="code">LUM</field>
+            <field name="parent_id" ref="budget_category_materials"/>
+            <field name="sequence">13</field>
+            <field name="color">2</field>
+            <field name="description">Lumber, plywood, wood products</field>
+        </record>
+
+        <record id="budget_category_electrical" model="construction.budget.category">
+            <field name="name">Electrical Materials</field>
+            <field name="code">ELC</field>
+            <field name="parent_id" ref="budget_category_materials"/>
+            <field name="sequence">14</field>
+            <field name="color">2</field>
+            <field name="description">Wiring, conduits, electrical components</field>
+        </record>
+
+        <record id="budget_category_plumbing" model="construction.budget.category">
+            <field name="name">Plumbing Materials</field>
+            <field name="code">PLM</field>
+            <field name="parent_id" ref="budget_category_materials"/>
+            <field name="sequence">15</field>
+            <field name="color">2</field>
+            <field name="description">Pipes, fittings, plumbing fixtures</field>
+        </record>
+
+        <!-- Labor Subcategories -->
+        <record id="budget_category_skilled_labor" model="construction.budget.category">
+            <field name="name">Skilled Labor</field>
+            <field name="code">SKL</field>
+            <field name="parent_id" ref="budget_category_labor"/>
+            <field name="sequence">21</field>
+            <field name="color">3</field>
+            <field name="description">Skilled tradespeople, specialists</field>
+        </record>
+
+        <record id="budget_category_general_labor" model="construction.budget.category">
+            <field name="name">General Labor</field>
+            <field name="code">GNL</field>
+            <field name="parent_id" ref="budget_category_labor"/>
+            <field name="sequence">22</field>
+            <field name="color">3</field>
+            <field name="description">General construction workers</field>
+        </record>
+
+        <!-- Equipment Subcategories -->
+        <record id="budget_category_heavy_equipment" model="construction.budget.category">
+            <field name="name">Heavy Equipment</field>
+            <field name="code">HEQ</field>
+            <field name="parent_id" ref="budget_category_equipment"/>
+            <field name="sequence">31</field>
+            <field name="color">5</field>
+            <field name="description">Excavators, cranes, bulldozers</field>
+        </record>
+
+        <record id="budget_category_tools" model="construction.budget.category">
+            <field name="name">Tools &amp; Small Equipment</field>
+            <field name="code">TOL</field>
+            <field name="parent_id" ref="budget_category_equipment"/>
+            <field name="sequence">32</field>
+            <field name="color">5</field>
+            <field name="description">Power tools, hand tools, small equipment</field>
+        </record>
+
+    </data>
+</odoo>

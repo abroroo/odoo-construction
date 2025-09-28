@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Sample data for demonstration -->
+    <data noupdate="1">
+
+        <!-- This could contain sample categories if needed -->
+        <!-- For now, we'll rely on the categories created by construction_budget -->
+
+    </data>
+
+</odoo>

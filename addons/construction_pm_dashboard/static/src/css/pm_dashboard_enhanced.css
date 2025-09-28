@@ -1,0 +1,427 @@
+/* PM Dashboard Specific Styles - Enhanced for Desktop with Custom Branding */
+
+.o_pm_dashboard_kanban {
+    padding: 20px;
+    background-color: #F8F9FA;
+    min-height: 100vh;
+    font-family: 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.o_pm_dashboard_kanban .o_kanban_card_content {
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+}
+
+/* Dashboard Header */
+.o_pm_dashboard_kanban h3 {
+    font-family: 'Onest', sans-serif !important;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #0064FF;
+    text-shadow: 0 1px 3px rgba(0, 100, 255, 0.1);
+}
+
+/* Project Header Styling */
+.o_pm_dashboard_kanban .card.border-0.bg-light h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #0064FF;
+    margin-bottom: 0.5rem;
+}
+
+/* Card Enhancements */
+.o_pm_dashboard_kanban .card {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: hidden;
+}
+
+.o_pm_dashboard_kanban .card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 8px 25px rgba(0, 100, 255, 0.15) !important;
+}
+
+/* Card Headers with Proper Text Contrast */
+.o_pm_dashboard_kanban .card-header {
+    border: none !important;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.o_pm_dashboard_kanban .card-header.bg-primary {
+    background: linear-gradient(135deg, #0064FF 0%, #3384FF 100%) !important;
+    color: #FFFFFF !important;
+}
+
+.o_pm_dashboard_kanban .card-header.bg-primary * {
+    color: #FFFFFF !important;
+}
+
+.o_pm_dashboard_kanban .card-header.bg-success {
+    background: linear-gradient(135deg, #00C851 0%, #33D474 100%) !important;
+    color: #FFFFFF !important;
+}
+
+.o_pm_dashboard_kanban .card-header.bg-success * {
+    color: #FFFFFF !important;
+}
+
+.o_pm_dashboard_kanban .card-header.bg-info {
+    background: linear-gradient(135deg, #17A2B8 0%, #39B9D1 100%) !important;
+    color: #FFFFFF !important;
+}
+
+.o_pm_dashboard_kanban .card-header.bg-info * {
+    color: #FFFFFF !important;
+}
+
+.o_pm_dashboard_kanban .card-header.bg-dark {
+    background: linear-gradient(135deg, #343A40 0%, #495057 100%) !important;
+    color: #FFFFFF !important;
+}
+
+.o_pm_dashboard_kanban .card-header.bg-dark * {
+    color: #FFFFFF !important;
+}
+
+/* Card Body Enhancements */
+.o_pm_dashboard_kanban .card-body {
+    padding: 1.5rem;
+    font-family: 'Onest', sans-serif;
+}
+
+/* Progress Bars */
+.o_pm_dashboard_kanban .progress {
+    height: 8px !important;
+    border-radius: 10px !important;
+    background-color: rgba(0, 100, 255, 0.1) !important;
+    overflow: hidden;
+}
+
+.o_pm_dashboard_kanban .progress-bar {
+    border-radius: 10px !important;
+    transition: width 0.8s ease-in-out;
+}
+
+.o_pm_dashboard_kanban .progress-bar.bg-success {
+    background: linear-gradient(90deg, #00C851 0%, #33D474 100%) !important;
+}
+
+.o_pm_dashboard_kanban .progress-bar.bg-danger {
+    background: linear-gradient(90deg, #FF4757 0%, #FF6B7A 100%) !important;
+}
+
+/* Statistics Numbers */
+.o_pm_dashboard_kanban h3,
+.o_pm_dashboard_kanban h4 {
+    font-weight: 700 !important;
+    font-variation-settings: "wght" 700;
+    margin-bottom: 0.25rem;
+}
+
+.o_pm_dashboard_kanban .text-primary {
+    color: #0064FF !important;
+}
+
+.o_pm_dashboard_kanban .text-success {
+    color: #00C851 !important;
+}
+
+.o_pm_dashboard_kanban .text-warning {
+    color: #FFB100 !important;
+}
+
+.o_pm_dashboard_kanban .text-info {
+    color: #17A2B8 !important;
+}
+
+.o_pm_dashboard_kanban .text-danger {
+    color: #FF4757 !important;
+}
+
+/* Table Styling */
+.o_pm_dashboard_kanban .table {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+.o_pm_dashboard_kanban .table td,
+.o_pm_dashboard_kanban .table th {
+    padding: 0.5rem 0;
+    border: none;
+    color: #2C3E50;
+}
+
+.o_pm_dashboard_kanban .table .border-top {
+    border-top: 2px solid #0064FF !important;
+    font-weight: 600;
+}
+
+/* Alerts */
+.o_pm_dashboard_kanban .alert {
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+}
+
+.o_pm_dashboard_kanban .alert-info {
+    background: linear-gradient(135deg, rgba(0, 100, 255, 0.1) 0%, rgba(51, 132, 255, 0.05) 100%);
+    color: #0050CC;
+    border-left: 4px solid #0064FF;
+}
+
+.o_pm_dashboard_kanban .alert-warning {
+    background: linear-gradient(135deg, rgba(255, 177, 0, 0.1) 0%, rgba(255, 203, 51, 0.05) 100%);
+    color: #CC8E00;
+    border-left: 4px solid #FFB100;
+}
+
+.o_pm_dashboard_kanban .alert-danger {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.1) 0%, rgba(255, 107, 122, 0.05) 100%);
+    color: #CC3946;
+    border-left: 4px solid #FF4757;
+}
+
+.o_pm_dashboard_kanban .alert-success {
+    background: linear-gradient(135deg, rgba(0, 200, 81, 0.1) 0%, rgba(51, 212, 116, 0.05) 100%);
+    color: #00A041;
+    border-left: 4px solid #00C851;
+}
+
+/* Button Styling */
+.o_pm_dashboard_kanban .btn {
+    border-radius: 8px !important;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    font-family: 'Onest', sans-serif;
+}
+
+.o_pm_dashboard_kanban .btn-primary {
+    background: linear-gradient(135deg, #0064FF 0%, #3384FF 100%) !important;
+    border: none !important;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 100, 255, 0.3);
+}
+
+.o_pm_dashboard_kanban .btn-primary:hover {
+    background: linear-gradient(135deg, #3384FF 0%, #0064FF 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 100, 255, 0.4);
+}
+
+.o_pm_dashboard_kanban .btn-outline-primary {
+    color: #0064FF !important;
+    border: 2px solid #0064FF !important;
+    background: transparent;
+}
+
+.o_pm_dashboard_kanban .btn-outline-primary:hover {
+    background: #0064FF !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.o_pm_dashboard_kanban .btn-outline-success {
+    color: #00C851 !important;
+    border: 2px solid #00C851 !important;
+}
+
+.o_pm_dashboard_kanban .btn-outline-success:hover {
+    background: #00C851 !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.o_pm_dashboard_kanban .btn-outline-warning {
+    color: #FFB100 !important;
+    border: 2px solid #FFB100 !important;
+}
+
+.o_pm_dashboard_kanban .btn-outline-warning:hover {
+    background: #FFB100 !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.o_pm_dashboard_kanban .btn-outline-info {
+    color: #17A2B8 !important;
+    border: 2px solid #17A2B8 !important;
+}
+
+.o_pm_dashboard_kanban .btn-outline-info:hover {
+    background: #17A2B8 !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+/* Quick Actions Grid */
+.o_pm_dashboard_kanban .row.g-3 .btn {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 12px;
+}
+
+.o_pm_dashboard_kanban .row.g-3 .btn i {
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.o_pm_dashboard_kanban .row.g-3 .btn:hover i {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Border Utilities */
+.o_pm_dashboard_kanban .border-end {
+    border-right: 1px solid rgba(0, 100, 255, 0.2) !important;
+}
+
+/* Text Contrast and Hierarchy */
+.o_pm_dashboard_kanban small,
+.o_pm_dashboard_kanban .small {
+    font-size: 0.85rem;
+    color: #6C757D;
+    font-weight: 400;
+}
+
+.o_pm_dashboard_kanban .text-muted {
+    color: #6C757D !important;
+}
+
+.o_pm_dashboard_kanban strong,
+.o_pm_dashboard_kanban .fw-bold {
+    color: #2C3E50 !important;
+    font-weight: 600;
+}
+
+/* Card Content Text Contrast */
+.o_pm_dashboard_kanban .card-body {
+    color: #2C3E50;
+}
+
+.o_pm_dashboard_kanban .card-body .text-primary {
+    color: #0064FF !important;
+    font-weight: 600;
+}
+
+.o_pm_dashboard_kanban .card-body .text-success {
+    color: #00C851 !important;
+    font-weight: 600;
+}
+
+.o_pm_dashboard_kanban .card-body .text-warning {
+    color: #FFB100 !important;
+    font-weight: 600;
+}
+
+.o_pm_dashboard_kanban .card-body .text-info {
+    color: #17A2B8 !important;
+    font-weight: 600;
+}
+
+.o_pm_dashboard_kanban .card-body .text-danger {
+    color: #FF4757 !important;
+    font-weight: 600;
+}
+
+/* Table Text Contrast */
+.o_pm_dashboard_kanban .table td,
+.o_pm_dashboard_kanban .table th {
+    color: #2C3E50 !important;
+}
+
+.o_pm_dashboard_kanban .table td strong,
+.o_pm_dashboard_kanban .table th strong {
+    color: #2C3E50 !important;
+    font-weight: 600;
+}
+
+/* Alert Text on Colored Backgrounds */
+.o_pm_dashboard_kanban .alert-info {
+    color: #0050CC !important;
+}
+
+.o_pm_dashboard_kanban .alert-warning {
+    color: #CC8E00 !important;
+}
+
+.o_pm_dashboard_kanban .alert-danger {
+    color: #CC3946 !important;
+}
+
+.o_pm_dashboard_kanban .alert-success {
+    color: #00A041 !important;
+}
+
+/* Project Header Text */
+.o_pm_dashboard_kanban .card.border-0.bg-light .card-body p {
+    color: #6C757D !important;
+}
+
+.o_pm_dashboard_kanban .card.border-0.bg-light .card-body strong {
+    color: #2C3E50 !important;
+}
+
+/* Shadow Utilities */
+.o_pm_dashboard_kanban .shadow-sm {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .o_pm_dashboard_kanban .col-xl-4 {
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .o_pm_dashboard_kanban {
+        padding: 15px;
+    }
+
+    .o_pm_dashboard_kanban .card-body {
+        padding: 1rem;
+    }
+
+    .o_pm_dashboard_kanban h2 {
+        font-size: 1.5rem;
+    }
+
+    .o_pm_dashboard_kanban h3 {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .o_pm_dashboard_kanban {
+        padding: 10px;
+    }
+
+    .o_pm_dashboard_kanban .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .o_pm_dashboard_kanban .card-header {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+
+    .o_pm_dashboard_kanban .row.g-3 .btn {
+        min-height: 100px;
+        padding: 1rem;
+    }
+}

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Enhanced Project Task Form View with Budget Integration -->
+    <record id="view_project_task_form_budget_integration" model="ir.ui.view">
+        <field name="name">project.task.form.budget.integration</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+
+            <!-- Add Smeta and Budget Information after Description -->
+            <xpath expr="//field[@name='description']" position="after">
+                <group string="Smeta &amp; Budget Information" invisible="not smeta_number">
+                    <group>
+                        <field name="smeta_number"/>
+                        <field name="smeta_section"/>
+                        <field name="smeta_type"/>
+                        <field name="planned_quantity"/>
+                        <field name="actual_quantity"/>
+                        <field name="quantity_per_unit"/>
+                        <field name="quantity_uom"/>
+                    </group>
+                    <group>
+                        <field name="budget_line_id"/>
+                        <field name="budget_category"/>
+                        <field name="budget_amount" widget="monetary"/>
+                        <field name="spent_amount" widget="monetary"/>
+                        <field name="remaining_budget" widget="monetary"/>
+                        <field name="budget_utilization" widget="percentage"/>
+                        <field name="is_over_budget"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Add Budget Actions in Header -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_budget_line"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-money"
+                        invisible="not budget_line_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="budget_amount" widget="monetary"/>
+                        </span>
+                        <span class="o_stat_text">Budget</span>
+                    </div>
+                </button>
+
+                <button name="action_view_expenses"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-credit-card"
+                        invisible="not budget_line_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="spent_amount" widget="monetary"/>
+                        </span>
+                        <span class="o_stat_text">Spent</span>
+                    </div>
+                </button>
+
+                <button name="action_create_expense"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-plus"
+                        invisible="not budget_line_id">
+                    <span class="o_stat_text">Create Expense</span>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Enhanced Project Task Tree View -->
+    <record id="view_project_task_tree_budget_integration" model="ir.ui.view">
+        <field name="name">project.task.tree.budget.integration</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="smeta_number" optional="show"/>
+                <field name="smeta_type" optional="hide"/>
+                <field name="budget_amount" widget="monetary" optional="show" sum="Total Budget"/>
+                <field name="spent_amount" widget="monetary" optional="show" sum="Total Spent"/>
+                <field name="remaining_budget" widget="monetary" optional="hide"/>
+                <field name="budget_utilization" widget="percentage" optional="hide"/>
+                <field name="is_over_budget" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Enhanced Project Task Kanban View -->
+    <record id="view_project_task_kanban_budget_integration" model="ir.ui.view">
+        <field name="name">project.task.kanban.budget.integration</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <!-- Add required fields for modifiers -->
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="smeta_number"/>
+                <field name="smeta_type"/>
+                <field name="budget_amount"/>
+                <field name="is_over_budget"/>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">
+                <!-- Original Smeta Tasks (Blue) -->
+                <div class="oe_kanban_bottom_left" invisible="not smeta_number or smeta_type == 'additional_task'">
+                    <span class="badge badge-pill badge-info">
+                        <i class="fa fa-file-text-o"/> <field name="smeta_number"/>
+                    </span>
+                    <span class="text-muted" invisible="not budget_amount">
+                        Budget: <field name="budget_amount" widget="monetary"/>
+                    </span>
+                </div>
+                <!-- Additional Tasks (Orange) -->
+                <div class="oe_kanban_bottom_left" invisible="smeta_type != 'additional_task'">
+                    <span class="badge badge-pill badge-warning">
+                        <i class="fa fa-plus-circle"/> Additional Task
+                    </span>
+                    <span class="text-muted" invisible="not budget_amount">
+                        Budget: <field name="budget_amount" widget="monetary"/>
+                    </span>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_kanban_bottom_right')]" position="inside">
+                <div invisible="not is_over_budget">
+                    <span class="badge badge-pill badge-danger">Over Budget</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Smeta Tasks Action -->
+    <record id="action_smeta_tasks" model="ir.actions.act_window">
+        <field name="name">Smeta Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>
+        <field name="domain">[('smeta_number', '!=', False)]</field>
+        <field name="context">{
+            'group_by': ['project_id', 'stage_id'],
+            'search_default_my_tasks': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No smeta tasks found!
+            </p>
+            <p>
+                Smeta tasks are automatically created when you import a Russian construction smeta file.
+                They provide both project management and budget tracking capabilities.
+            </p>
+        </field>
+    </record>
+
+    <!-- Smeta Tasks by Project Action -->
+    <record id="action_smeta_tasks_by_project" model="ir.actions.act_window">
+        <field name="name">Smeta Tasks by Project</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="domain">[('smeta_number', '!=', False)]</field>
+        <field name="context">{'group_by': ['project_id', 'smeta_type']}</field>
+    </record>
+
+    <!-- Additional Tasks Action -->
+    <record id="action_additional_tasks" model="ir.actions.act_window">
+        <field name="name">Additional Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form,calendar</field>
+        <field name="domain">[('smeta_type', '=', 'additional_task')]</field>
+        <field name="context">{
+            'group_by': ['project_id', 'stage_id'],
+            'search_default_my_tasks': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No additional tasks found!
+            </p>
+            <p>
+                Additional tasks are created by foremen for work not included in the original смета.
+                These tasks help track extra construction work and material consumption.
+            </p>
+        </field>
+    </record>
+
+    <!-- All Tasks with Type Grouping -->
+    <record id="action_all_tasks_by_type" model="ir.actions.act_window">
+        <field name="name">All Construction Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form,calendar</field>
+        <field name="domain">[('smeta_type', 'in', ['main_task', 'sub_task', 'additional_task'])]</field>
+        <field name="context">{
+            'group_by': ['smeta_type', 'project_id'],
+            'search_default_my_tasks': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No construction tasks found!
+            </p>
+            <p>
+                This view shows all construction tasks grouped by type:
+                <br/>• <strong>Main/Sub Tasks</strong>: From original смета import
+                <br/>• <strong>Additional Tasks</strong>: Created by foremen for extra work
+            </p>
+        </field>
+    </record>
+
+</odoo>
