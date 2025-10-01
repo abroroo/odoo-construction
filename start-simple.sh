@@ -1,15 +1,14 @@
 #!/bin/bash
 set -e
 
-echo "=== Simple Odoo Startup with Hardcoded Config ==="
+echo "=== Odoo 16 Startup for Railway ==="
 
-# Hardcoded configuration for testing
-# You'll need to replace these with your actual database credentials
-DB_HOST="postgres.railway.internal"
-DB_PORT="5432"
-DB_USER="postgres"
-DB_PASSWORD="REPLACE_WITH_YOUR_PASSWORD"
-DB_NAME="railway"
+# Railway PostgreSQL configuration
+DB_HOST="${PGHOST:-postgres.railway.internal}"
+DB_PORT="${PGPORT:-5432}"
+DB_USER="${PGUSER:-postgres}"
+DB_PASSWORD="${PGPASSWORD:-REPLACE_WITH_YOUR_PASSWORD}"
+DB_NAME="${PGDATABASE:-railway}"
 HTTP_PORT="${PORT:-8080}"
 
 echo "Starting Odoo..."
@@ -38,5 +37,16 @@ xmlrpc_port = $HTTP_PORT
 log_level = info
 EOF
 
-echo "Starting Odoo with config file..."
-exec odoo -c /tmp/odoo.conf
+echo "Starting Odoo 16 (which allows postgres user)..."
+
+# For Odoo 16, we can use command line parameters directly
+exec odoo \
+    --db_host=$DB_HOST \
+    --db_port=$DB_PORT \
+    --db_user=$DB_USER \
+    --db_password=$DB_PASSWORD \
+    --database=$DB_NAME \
+    --http-port=$HTTP_PORT \
+    --proxy-mode \
+    --without-demo=all \
+    --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons
