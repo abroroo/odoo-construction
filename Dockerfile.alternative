@@ -1,0 +1,51 @@
+# Alternative: Use Odoo 14 which definitely doesn't have the postgres check
+FROM odoo:14
+
+USER root
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy custom addons
+COPY ./addons /mnt/extra-addons/
+
+# Create simple startup script
+RUN cat > /entrypoint.sh << 'EOF'
+#!/bin/bash
+set -e
+
+echo "=== Odoo 14 Railway Deployment ==="
+echo "Odoo version: $(odoo --version)"
+
+# Railway PostgreSQL configuration
+DB_HOST="${PGHOST:-postgres.railway.internal}"
+DB_PORT="${PGPORT:-5432}"
+DB_USER="${PGUSER:-postgres}"
+DB_PASSWORD="${PGPASSWORD}"
+DB_NAME="${PGDATABASE:-railway}"
+HTTP_PORT="${PORT:-8080}"
+
+echo "Starting with configuration:"
+echo "  DB: $DB_USER@$DB_HOST:$DB_PORT/$DB_NAME"
+echo "  HTTP: $HTTP_PORT"
+
+exec odoo \
+    --db_host="$DB_HOST" \
+    --db_port="$DB_PORT" \
+    --db_user="$DB_USER" \
+    --db_password="$DB_PASSWORD" \
+    --database="$DB_NAME" \
+    --http-port="$HTTP_PORT" \
+    --proxy-mode \
+    --without-demo=all \
+    --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons
+EOF
+
+RUN chmod +x /entrypoint.sh && \
+    chown -R odoo:odoo /mnt/extra-addons/
+
+USER odoo
+EXPOSE 8080
+ENTRYPOINT ["/entrypoint.sh"]

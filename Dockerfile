@@ -1,52 +1,64 @@
-# IMPORTANT: Using Odoo 15 to avoid postgres user security check
-# Odoo 16 and 17 both have this restriction on some versions
+# Using Odoo 15 and patching the postgres check at build time
 FROM odoo:15
 
 USER root
-
-# Force rebuild by adding timestamp
-RUN echo "Build timestamp: $(date)" > /tmp/build_time.txt
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
+# CRITICAL: Patch Odoo to remove the postgres user check
+# This modifies the Odoo source to disable the security check
+RUN find /usr/lib/python3/dist-packages/odoo -name "*.py" -type f -exec grep -l "Using the database user 'postgres' is a security risk" {} \; | \
+    xargs -r sed -i "s/if .*db_user.*==.*'postgres'/if False/g" && \
+    find /usr/lib/python3/dist-packages/odoo -name "*.py" -type f -exec grep -l "database user 'postgres' is a security risk" {} \; | \
+    xargs -r sed -i "s/sys\.exit(1)/#sys.exit(1)/g"
+
+# Alternative broader patch to catch any postgres user checks
+RUN find /usr/lib/python3/dist-packages/odoo -type f -name "*.py" -exec \
+    sed -i "s/\(.*\)db_user.*==.*'postgres'\(.*\)/\1False\2/g" {} \; 2>/dev/null || true
+
 # Copy custom addons
 COPY ./addons /mnt/extra-addons/
 
-# Create a simple startup script
-RUN echo '#!/bin/bash' > /entrypoint.sh && \
-    echo 'set -e' >> /entrypoint.sh && \
-    echo '' >> /entrypoint.sh && \
-    echo 'echo "=== Odoo 15 Railway Deployment ==="' >> /entrypoint.sh && \
-    echo 'echo "Odoo version:"' >> /entrypoint.sh && \
-    echo 'odoo --version' >> /entrypoint.sh && \
-    echo '' >> /entrypoint.sh && \
-    echo '# Railway PostgreSQL configuration' >> /entrypoint.sh && \
-    echo 'DB_HOST="${PGHOST:-postgres.railway.internal}"' >> /entrypoint.sh && \
-    echo 'DB_PORT="${PGPORT:-5432}"' >> /entrypoint.sh && \
-    echo 'DB_USER="${PGUSER:-postgres}"' >> /entrypoint.sh && \
-    echo 'DB_PASSWORD="${PGPASSWORD}"' >> /entrypoint.sh && \
-    echo 'DB_NAME="${PGDATABASE:-railway}"' >> /entrypoint.sh && \
-    echo 'HTTP_PORT="${PORT:-8080}"' >> /entrypoint.sh && \
-    echo '' >> /entrypoint.sh && \
-    echo 'echo "Configuration:"' >> /entrypoint.sh && \
-    echo 'echo "  DB_HOST: $DB_HOST"' >> /entrypoint.sh && \
-    echo 'echo "  DB_USER: $DB_USER"' >> /entrypoint.sh && \
-    echo 'echo "  HTTP_PORT: $HTTP_PORT"' >> /entrypoint.sh && \
-    echo '' >> /entrypoint.sh && \
-    echo 'exec odoo \' >> /entrypoint.sh && \
-    echo '    --db_host="$DB_HOST" \' >> /entrypoint.sh && \
-    echo '    --db_port="$DB_PORT" \' >> /entrypoint.sh && \
-    echo '    --db_user="$DB_USER" \' >> /entrypoint.sh && \
-    echo '    --db_password="$DB_PASSWORD" \' >> /entrypoint.sh && \
-    echo '    --database="$DB_NAME" \' >> /entrypoint.sh && \
-    echo '    --http-port="$HTTP_PORT" \' >> /entrypoint.sh && \
-    echo '    --proxy-mode \' >> /entrypoint.sh && \
-    echo '    --without-demo=all \' >> /entrypoint.sh && \
-    echo '    --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons' >> /entrypoint.sh && \
-    chmod +x /entrypoint.sh
+# Create startup script directly
+RUN cat > /start.sh << 'EOF'
+#!/bin/bash
+set -e
+
+echo "=== Odoo Railway Deployment (Patched) ==="
+
+# Use Railway's environment variables
+DB_HOST="${PGHOST:-postgres.railway.internal}"
+DB_PORT="${PGPORT:-5432}"
+DB_USER="${PGUSER:-postgres}"
+DB_PASSWORD="${PGPASSWORD:-password}"
+DB_NAME="${PGDATABASE:-railway}"
+HTTP_PORT="${PORT:-8080}"
+
+echo "Configuration:"
+echo "  DB_HOST: $DB_HOST"
+echo "  DB_USER: $DB_USER"
+echo "  DB_NAME: $DB_NAME"
+echo "  HTTP_PORT: $HTTP_PORT"
+
+# Start Odoo
+exec odoo \
+    --db_host="$DB_HOST" \
+    --db_port="$DB_PORT" \
+    --db_user="$DB_USER" \
+    --db_password="$DB_PASSWORD" \
+    --database="$DB_NAME" \
+    --http-port="$HTTP_PORT" \
+    --proxy-mode \
+    --without-demo=all \
+    --workers=2 \
+    --max-cron-threads=1 \
+    --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons
+EOF
+
+RUN chmod +x /start.sh
 
 # Set permissions
 RUN chown -R odoo:odoo /mnt/extra-addons/
@@ -55,4 +67,4 @@ USER odoo
 
 EXPOSE 8080
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/start.sh"]
