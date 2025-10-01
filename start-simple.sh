@@ -39,4 +39,4 @@ log_level = info
 EOF
 
 echo "Starting Odoo with config file..."
-exec python3 /usr/local/bin/bypass-postgres-check.py -c /tmp/odoo.conf
+exec odoo -c /tmp/odoo.conf
