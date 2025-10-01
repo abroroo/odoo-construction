@@ -23,13 +23,13 @@ RUN find /usr/lib/python3/dist-packages/odoo -type f -name "*.py" -exec \
 COPY ./addons /mnt/extra-addons/
 
 # Create startup script directly
-RUN cat > /start.sh << 'EOF'
+RUN bash -c 'cat > /start.sh << "EOF"
 #!/bin/bash
 set -e
 
 echo "=== Odoo Railway Deployment (Patched) ==="
 
-# Use Railway's environment variables
+# Use Railway environment variables
 DB_HOST="${PGHOST:-postgres.railway.internal}"
 DB_PORT="${PGPORT:-5432}"
 DB_USER="${PGUSER:-postgres}"
@@ -57,6 +57,7 @@ exec odoo \
     --max-cron-threads=1 \
     --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons
 EOF
+'
 
 RUN chmod +x /start.sh
 
