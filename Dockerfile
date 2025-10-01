@@ -16,15 +16,11 @@ RUN sed -i "s/if params\['db_user'\] == 'postgres'/if False/" /usr/lib/python3/d
 COPY ./addons /mnt/extra-addons/
 
 # Copy startup scripts
-COPY ./docker-entrypoint-override.sh /usr/local/bin/docker-entrypoint-override.sh
-COPY ./start-railway-final.sh /usr/local/bin/start-railway-final.sh
-COPY ./start.sh /usr/local/bin/start.sh
+COPY ./start-simple.sh /usr/local/bin/start-simple.sh
 
 # Set proper permissions
 RUN chown -R odoo:odoo /mnt/extra-addons/
-RUN chmod +x /usr/local/bin/docker-entrypoint-override.sh
-RUN chmod +x /usr/local/bin/start-railway-final.sh
-RUN chmod +x /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start-simple.sh
 
 # Switch back to odoo user
 USER odoo
@@ -32,6 +28,5 @@ USER odoo
 # Expose Railway's expected port
 EXPOSE 8080
 
-# Use the final Railway startup script
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint-override.sh"]
-CMD ["/usr/local/bin/start-railway-final.sh"]
+# Use the simple startup script
+CMD ["/usr/local/bin/start-simple.sh"]
