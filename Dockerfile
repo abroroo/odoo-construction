@@ -28,11 +28,21 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '' >> /start.sh && \
     echo 'echo "=== Odoo Railway Deployment (Patched) ==="' >> /start.sh && \
     echo '' >> /start.sh && \
-    echo '# Use Railway environment variables' >> /start.sh && \
-    echo 'DB_HOST="${PGHOST:-postgres.railway.internal}"' >> /start.sh && \
+    echo '# Use Railway PostgreSQL environment variables' >> /start.sh && \
+    echo '# Railway provides: DATABASE_URL or individual PG* variables' >> /start.sh && \
+    echo 'if [ -n "$DATABASE_URL" ]; then' >> /start.sh && \
+    echo '    # Parse DATABASE_URL' >> /start.sh && \
+    echo '    export PGUSER=$(echo $DATABASE_URL | sed -e "s/postgres:\/\/\([^:]*\):.*/\1/")' >> /start.sh && \
+    echo '    export PGPASSWORD=$(echo $DATABASE_URL | sed -e "s/postgres:\/\/[^:]*:\([^@]*\)@.*/\1/")' >> /start.sh && \
+    echo '    export PGHOST=$(echo $DATABASE_URL | sed -e "s/postgres:\/\/.*@\([^:]*\):.*/\1/")' >> /start.sh && \
+    echo '    export PGPORT=$(echo $DATABASE_URL | sed -e "s/postgres:\/\/.*:\([0-9]*\)\/.*/\1/")' >> /start.sh && \
+    echo '    export PGDATABASE=$(echo $DATABASE_URL | sed -e "s/postgres:\/\/.*\/\(.*\)/\1/")' >> /start.sh && \
+    echo 'fi' >> /start.sh && \
+    echo '' >> /start.sh && \
+    echo 'DB_HOST="${PGHOST:-localhost}"' >> /start.sh && \
     echo 'DB_PORT="${PGPORT:-5432}"' >> /start.sh && \
     echo 'DB_USER="${PGUSER:-postgres}"' >> /start.sh && \
-    echo 'DB_PASSWORD="${PGPASSWORD:-password}"' >> /start.sh && \
+    echo 'DB_PASSWORD="${PGPASSWORD}"' >> /start.sh && \
     echo 'DB_NAME="${PGDATABASE:-railway}"' >> /start.sh && \
     echo 'HTTP_PORT="${PORT:-8080}"' >> /start.sh && \
     echo '' >> /start.sh && \
