@@ -22,44 +22,40 @@ RUN find /usr/lib/python3/dist-packages/odoo -type f -name "*.py" -exec \
 # Copy custom addons
 COPY ./addons /mnt/extra-addons/
 
-# Create startup script directly
-RUN bash -c 'cat > /start.sh << "EOF"
-#!/bin/bash
-set -e
-
-echo "=== Odoo Railway Deployment (Patched) ==="
-
-# Use Railway environment variables
-DB_HOST="${PGHOST:-postgres.railway.internal}"
-DB_PORT="${PGPORT:-5432}"
-DB_USER="${PGUSER:-postgres}"
-DB_PASSWORD="${PGPASSWORD:-password}"
-DB_NAME="${PGDATABASE:-railway}"
-HTTP_PORT="${PORT:-8080}"
-
-echo "Configuration:"
-echo "  DB_HOST: $DB_HOST"
-echo "  DB_USER: $DB_USER"
-echo "  DB_NAME: $DB_NAME"
-echo "  HTTP_PORT: $HTTP_PORT"
-
-# Start Odoo
-exec odoo \
-    --db_host="$DB_HOST" \
-    --db_port="$DB_PORT" \
-    --db_user="$DB_USER" \
-    --db_password="$DB_PASSWORD" \
-    --database="$DB_NAME" \
-    --http-port="$HTTP_PORT" \
-    --proxy-mode \
-    --without-demo=all \
-    --workers=2 \
-    --max-cron-threads=1 \
-    --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons
-EOF
-'
-
-RUN chmod +x /start.sh
+# Create startup script using echo commands
+RUN echo '#!/bin/bash' > /start.sh && \
+    echo 'set -e' >> /start.sh && \
+    echo '' >> /start.sh && \
+    echo 'echo "=== Odoo Railway Deployment (Patched) ==="' >> /start.sh && \
+    echo '' >> /start.sh && \
+    echo '# Use Railway environment variables' >> /start.sh && \
+    echo 'DB_HOST="${PGHOST:-postgres.railway.internal}"' >> /start.sh && \
+    echo 'DB_PORT="${PGPORT:-5432}"' >> /start.sh && \
+    echo 'DB_USER="${PGUSER:-postgres}"' >> /start.sh && \
+    echo 'DB_PASSWORD="${PGPASSWORD:-password}"' >> /start.sh && \
+    echo 'DB_NAME="${PGDATABASE:-railway}"' >> /start.sh && \
+    echo 'HTTP_PORT="${PORT:-8080}"' >> /start.sh && \
+    echo '' >> /start.sh && \
+    echo 'echo "Configuration:"' >> /start.sh && \
+    echo 'echo "  DB_HOST: $DB_HOST"' >> /start.sh && \
+    echo 'echo "  DB_USER: $DB_USER"' >> /start.sh && \
+    echo 'echo "  DB_NAME: $DB_NAME"' >> /start.sh && \
+    echo 'echo "  HTTP_PORT: $HTTP_PORT"' >> /start.sh && \
+    echo '' >> /start.sh && \
+    echo '# Start Odoo' >> /start.sh && \
+    echo 'exec odoo \' >> /start.sh && \
+    echo '    --db_host="$DB_HOST" \' >> /start.sh && \
+    echo '    --db_port="$DB_PORT" \' >> /start.sh && \
+    echo '    --db_user="$DB_USER" \' >> /start.sh && \
+    echo '    --db_password="$DB_PASSWORD" \' >> /start.sh && \
+    echo '    --database="$DB_NAME" \' >> /start.sh && \
+    echo '    --http-port="$HTTP_PORT" \' >> /start.sh && \
+    echo '    --proxy-mode \' >> /start.sh && \
+    echo '    --without-demo=all \' >> /start.sh && \
+    echo '    --workers=2 \' >> /start.sh && \
+    echo '    --max-cron-threads=1 \' >> /start.sh && \
+    echo '    --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons' >> /start.sh && \
+    chmod +x /start.sh
 
 # Set permissions
 RUN chown -R odoo:odoo /mnt/extra-addons/
