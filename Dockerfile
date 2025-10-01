@@ -18,16 +18,12 @@ COPY ./addons /mnt/extra-addons/
 # Copy startup scripts
 COPY ./docker-entrypoint-override.sh /usr/local/bin/docker-entrypoint-override.sh
 COPY ./start-railway-final.sh /usr/local/bin/start-railway-final.sh
-COPY ./start-railway-hardcoded.sh /usr/local/bin/start-railway-hardcoded.sh
-COPY ./start-railway.sh /usr/local/bin/start-railway.sh
 COPY ./start.sh /usr/local/bin/start.sh
 
 # Set proper permissions
 RUN chown -R odoo:odoo /mnt/extra-addons/
 RUN chmod +x /usr/local/bin/docker-entrypoint-override.sh
 RUN chmod +x /usr/local/bin/start-railway-final.sh
-RUN chmod +x /usr/local/bin/start-railway-hardcoded.sh
-RUN chmod +x /usr/local/bin/start-railway.sh
 RUN chmod +x /usr/local/bin/start.sh
 
 # Switch back to odoo user
