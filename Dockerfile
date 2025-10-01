@@ -15,12 +15,14 @@ RUN sed -i "s/if params\['db_user'\] == 'postgres'/if False/" /usr/lib/python3/d
 # Copy custom addons
 COPY ./addons /mnt/extra-addons/
 
-# Copy startup scripts
+# Copy startup scripts and bypass script
 COPY ./start-simple.sh /usr/local/bin/start-simple.sh
+COPY ./bypass-postgres-check.py /usr/local/bin/bypass-postgres-check.py
 
 # Set proper permissions
 RUN chown -R odoo:odoo /mnt/extra-addons/
 RUN chmod +x /usr/local/bin/start-simple.sh
+RUN chmod +x /usr/local/bin/bypass-postgres-check.py
 
 # Switch back to odoo user
 USER odoo
