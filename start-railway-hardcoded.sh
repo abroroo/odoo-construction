@@ -30,7 +30,6 @@ odoo \
   --db_user="$DB_USER" \
   --db_password="$DB_PASSWORD" \
   --database="$DB_NAME" \
-  --admin-passwd="admin123" \
   --proxy-mode \
   --workers=1 \
   --max-cron-threads=1 \
