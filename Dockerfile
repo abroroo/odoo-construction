@@ -12,11 +12,13 @@ RUN apt-get update && apt-get install -y \
 COPY ./addons /mnt/extra-addons/
 
 # Copy startup scripts
+COPY ./start-railway-hardcoded.sh /usr/local/bin/start-railway-hardcoded.sh
 COPY ./start-railway.sh /usr/local/bin/start-railway.sh
 COPY ./start.sh /usr/local/bin/start.sh
 
 # Set proper permissions
 RUN chown -R odoo:odoo /mnt/extra-addons/
+RUN chmod +x /usr/local/bin/start-railway-hardcoded.sh
 RUN chmod +x /usr/local/bin/start-railway.sh
 RUN chmod +x /usr/local/bin/start.sh
 
@@ -26,5 +28,5 @@ USER odoo
 # Expose port
 EXPOSE 8069
 
-# Use Railway-specific startup script
-CMD ["/usr/local/bin/start-railway.sh"]
+# Use hardcoded Railway startup script due to env var issues
+CMD ["/usr/local/bin/start-railway-hardcoded.sh"]
