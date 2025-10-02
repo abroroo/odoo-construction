@@ -2,6 +2,7 @@
 """
 Manual Menu Cleanup Script
 Run this script to clean up Odoo menus manually
+and assign the current user to the construction admin group.
 """
 
 import xmlrpc.client
