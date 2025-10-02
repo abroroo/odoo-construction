@@ -47,6 +47,9 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo 'HTTP_PORT="${PORT:-8080}"' >> /start.sh && \
     echo '' >> /start.sh && \
     echo 'echo "Configuration:"' >> /start.sh && \
+    echo 'echo "  PGHOST env var: $PGHOST"' >> /start.sh && \
+    echo 'echo "  PGUSER env var: $PGUSER"' >> /start.sh && \
+    echo 'echo "  PGDATABASE env var: $PGDATABASE"' >> /start.sh && \
     echo 'echo "  DB_HOST: $DB_HOST"' >> /start.sh && \
     echo 'echo "  DB_USER: $DB_USER"' >> /start.sh && \
     echo 'echo "  DB_NAME: $DB_NAME"' >> /start.sh && \
