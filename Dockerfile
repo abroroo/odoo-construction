@@ -1,5 +1,5 @@
-# Using Odoo 15 and patching the postgres check at build time
-FROM odoo:15
+# Using Odoo 17 and patching the postgres check at build time
+FROM odoo:17
 
 USER root
 
@@ -7,6 +7,9 @@ USER root
 RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Python libraries for construction modules
+RUN pip3 install openpyxl
 
 # CRITICAL: Patch Odoo to remove the postgres user check
 # This modifies the Odoo source to disable the security check
