@@ -38,13 +38,13 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '    DB_PASSWORD=$(echo $DATABASE_URL | sed -e "s/.*:\/\/[^:]*:\([^@]*\)@.*/\1/")' >> /start.sh && \
     echo '    DB_HOST=$(echo $DATABASE_URL | sed -e "s/.*@\([^:]*\):.*/\1/")' >> /start.sh && \
     echo '    DB_PORT=$(echo $DATABASE_URL | sed -e "s/.*:\([0-9]*\)\/.*/\1/")' >> /start.sh && \
-    echo '    DB_NAME=$(echo $DATABASE_URL | sed -e "s/.*\/\([^?]*\).*/\1/")' >> /start.sh && \
+    echo '    DB_NAME="odoo17"' >> /start.sh && \
     echo 'else' >> /start.sh && \
     echo '    DB_HOST="${PGHOST:-localhost}"' >> /start.sh && \
     echo '    DB_PORT="${PGPORT:-5432}"' >> /start.sh && \
     echo '    DB_USER="${PGUSER:-postgres}"' >> /start.sh && \
     echo '    DB_PASSWORD="${PGPASSWORD}"' >> /start.sh && \
-    echo '    DB_NAME="${PGDATABASE:-railway}"' >> /start.sh && \
+    echo '    DB_NAME="odoo17"' >> /start.sh && \
     echo 'fi' >> /start.sh && \
     echo '' >> /start.sh && \
     echo 'HTTP_PORT="${PORT:-8080}"' >> /start.sh && \
