@@ -233,6 +233,10 @@ class BatchTaskWizard(models.TransientModel):
 
         # Phase 1: Create tasks only (no computed fields issues)
         _logger.info("Phase 1: Creating tasks...")
+
+        # Get the default stage (maps to "К выполнению" / "To Do")
+        default_stage = self.default_stage_id or self._get_default_stage(project)
+
         for task_data in sorted_data:
             try:
                 # Create the most basic task possible
@@ -240,6 +244,11 @@ class BatchTaskWizard(models.TransientModel):
                     'name': f"{task_data['number']}. {task_data['name']}",
                     'project_id': project.id,
                 }
+
+                # Automatically assign stage based on Russian workflow
+                # New tasks always go to "К выполнению" (To Do) stage
+                if default_stage:
+                    task_vals['stage_id'] = default_stage.id
 
                 # Create the task with minimal data to avoid computed field conflicts
                 task = self.env['project.task'].with_context(mail_create_nolog=True).create(task_vals)
