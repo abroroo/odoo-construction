@@ -70,7 +70,6 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '    --database="$DB_NAME" \' >> /start.sh && \
     echo '    --http-port="$HTTP_PORT" \' >> /start.sh && \
     echo '    --log-level=warn \' >> /start.sh && \
-    echo '    --data-dir=/tmp/odoo \' >> /start.sh && \
     echo '    --init=base \' >> /start.sh && \
     echo '    --proxy-mode \' >> /start.sh && \
     echo '    --without-demo=all \' >> /start.sh && \
