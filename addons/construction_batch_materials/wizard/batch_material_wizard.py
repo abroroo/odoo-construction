@@ -156,8 +156,13 @@ class BatchMaterialWizard(models.TransientModel):
             if not line:
                 continue  # Skip empty lines
 
-            # Split by pipe character
-            parts = [part.strip() for part in line.split('|')]
+            # Remove leading/trailing pipes and split
+            line = line.strip('|').strip()
+            if not line:
+                continue
+
+            # Split by pipe character and strip whitespace, filter empty parts
+            parts = [part.strip() for part in line.split('|') if part.strip()]
 
             if len(parts) < 3:
                 errors.append(f"Line {line_num}: Expected at least 3 parts separated by '|', got {len(parts)}: {line}")
