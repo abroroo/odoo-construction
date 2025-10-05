@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Construction Warehouse Management',
-    'version': '1.0.2',
+    'version': '1.0.3',
     'category': 'Inventory',
     'summary': 'Physical warehouse inventory management for construction projects',
     'description': """
@@ -53,6 +53,7 @@ flowing through project warehouses from suppliers to consumption.
         'views/material_consumption_views.xml',
         'views/quick_task_wizard_views.xml',
         'views/supplier_portal_views.xml',
+        'views/phase1_simplified_views.xml',
         'views/warehouse_menus.xml',
     ],
     'demo': [

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+    =====================================================================
+    PHASE 1 SIMPLIFIED VIEWS
+    =====================================================================
+    These views hide advanced fields while keeping the full data model.
+    All fields remain in the database - just hidden from the UI.
+    =====================================================================
+    -->
+
+    <!-- SUPPLIER DELIVERY - Phase 1 Simplified Form -->
+    <record id="view_material_receipt_form_phase1" model="ir.ui.view">
+        <field name="name">material.receipt.form.phase1</field>
+        <field name="model">construction.material.receipt</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Supplier Delivery (Phase 1)">
+                <header>
+                    <button name="action_mark_received"
+                            string="Mark as Received"
+                            type="object"
+                            class="btn-primary"
+                            invisible="receipt_status != 'draft'"/>
+                    <field name="receipt_status" widget="statusbar" statusbar_visible="draft,received"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Delivery Information">
+                            <field name="warehouse_id" required="1"/>
+                            <field name="project_id" required="1" options="{'no_create': True}"/>
+                            <field name="material_id" required="1"/>
+                            <field name="delivery_reference" placeholder="Delivery note number"/>
+                            <field name="receipt_date" required="1"/>
+                        </group>
+                        <group string="Quantity &amp; Price">
+                            <field name="quantity" required="1"/>
+                            <field name="unit_of_measure" readonly="1"/>
+                            <field name="unit_cost" required="1"/>
+                            <field name="total_cost" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Supplier">
+                            <field name="supplier_id" required="1"/>
+                        </group>
+                        <group string="Received By">
+                            <field name="received_by_id" required="1"/>
+                        </group>
+                    </group>
+
+                    <!-- HIDDEN FIELDS - Available in database but not shown in Phase 1 -->
+                    <field name="supplier_contact" invisible="1"/>
+                    <field name="delivery_truck" invisible="1"/>
+                    <field name="purchase_order_ref" invisible="1"/>
+                    <field name="quality_check" invisible="1"/>
+                    <field name="condition_notes" invisible="1"/>
+                    <field name="damaged_quantity" invisible="1"/>
+                    <field name="storage_location" invisible="1"/>
+                    <field name="storage_notes" invisible="1"/>
+                    <field name="delivery_photos" invisible="1"/>
+                    <field name="receipt_notes" invisible="1"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- FOREMAN CONSUMPTION - Phase 1 Simplified Form -->
+    <record id="view_material_consumption_form_phase1" model="ir.ui.view">
+        <field name="name">material.consumption.form.phase1</field>
+        <field name="model">construction.material.consumption</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Foreman Material Consumption (Phase 1)">
+                <header>
+                    <button name="action_confirm_consumption"
+                            string="Confirm Consumption"
+                            type="object"
+                            class="btn-primary"
+                            invisible="consumption_status != 'draft'"/>
+                    <field name="consumption_status" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h2>Consume Material for Task</h2>
+                        <p class="text-muted">Select task → Choose material → Enter quantity → Confirm</p>
+                    </div>
+
+                    <group>
+                        <group string="Project &amp; Task">
+                            <field name="warehouse_id" required="1" options="{'no_create': True}"/>
+                            <field name="project_id" readonly="1"/>
+                            <field name="task_id" required="1" options="{'no_create': True}" placeholder="Select смета task"/>
+                        </group>
+                        <group string="Material">
+                            <field name="material_id" required="1" options="{'no_create': True}"/>
+                            <field name="available_quantity" readonly="1" string="Available in Warehouse"/>
+                            <field name="unit_of_measure" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Consumption">
+                            <field name="quantity" required="1"/>
+                            <field name="consumed_by_id" required="1"/>
+                            <field name="consumption_date" required="1"/>
+                        </group>
+                        <group>
+                            <!-- Empty group for layout -->
+                        </group>
+                    </group>
+
+                    <!-- HIDDEN FIELDS - Available in database but not shown in Phase 1 -->
+                    <field name="work_location" invisible="1"/>
+                    <field name="consumption_purpose" invisible="1"/>
+                    <field name="consumption_notes" invisible="1"/>
+                    <field name="usage_photos" invisible="1"/>
+                    <field name="unit_cost" invisible="1"/>
+                    <field name="total_cost" invisible="1"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- WAREHOUSE STOCK - Phase 1 Simplified Tree View -->
+    <record id="view_warehouse_stock_tree_phase1" model="ir.ui.view">
+        <field name="name">warehouse.stock.tree.phase1</field>
+        <field name="model">construction.warehouse.stock</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree string="Warehouse Stock (Phase 1)" create="false" delete="false">
+                <field name="warehouse_id"/>
+                <field name="project_id"/>
+                <field name="material_id"/>
+                <field name="quantity"/>
+                <field name="available_quantity"/>
+                <field name="unit_of_measure"/>
+                <field name="unit_cost"/>
+                <field name="total_value"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- PROJECT WAREHOUSE - Phase 1 Simplified Form -->
+    <record id="view_project_warehouse_form_phase1" model="ir.ui.view">
+        <field name="name">project.warehouse.form.phase1</field>
+        <field name="model">construction.project.warehouse</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Project Warehouse (Phase 1)">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Warehouse name..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Basic Information">
+                            <field name="project_id" required="1" options="{'no_create': True}"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Stock Summary">
+                            <field name="total_materials"/>
+                            <field name="total_stock_value"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Stock">
+                            <field name="stock_ids">
+                                <tree>
+                                    <field name="material_id"/>
+                                    <field name="quantity"/>
+                                    <field name="available_quantity"/>
+                                    <field name="unit_of_measure"/>
+                                    <field name="total_value"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <!-- HIDDEN FIELDS - Available in database but not shown in Phase 1 -->
+                    <field name="address" invisible="1"/>
+                    <field name="warehouse_type" invisible="1"/>
+                    <field name="storage_capacity" invisible="1"/>
+                    <field name="current_utilization" invisible="1"/>
+                    <field name="warehouse_manager_id" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--
+    =====================================================================
+    PHASE 1 SIMPLIFIED TREE VIEWS
+    =====================================================================
+    -->
+
+    <!-- Material Receipt - Simplified Tree -->
+    <record id="view_material_receipt_tree_phase1" model="ir.ui.view">
+        <field name="name">material.receipt.tree.phase1</field>
+        <field name="model">construction.material.receipt</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree string="Supplier Deliveries" decoration-success="receipt_status == 'received'" decoration-info="receipt_status == 'draft'">
+                <field name="receipt_date"/>
+                <field name="warehouse_id"/>
+                <field name="project_id"/>
+                <field name="material_id"/>
+                <field name="supplier_id"/>
+                <field name="delivery_reference"/>
+                <field name="quantity"/>
+                <field name="unit_of_measure"/>
+                <field name="total_cost" sum="Total"/>
+                <field name="receipt_status" widget="badge" decoration-success="receipt_status == 'received'" decoration-info="receipt_status == 'draft'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Material Consumption - Simplified Tree -->
+    <record id="view_material_consumption_tree_phase1" model="ir.ui.view">
+        <field name="name">material.consumption.tree.phase1</field>
+        <field name="model">construction.material.consumption</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree string="Material Consumption" decoration-success="consumption_status == 'confirmed'" decoration-info="consumption_status == 'draft'">
+                <field name="consumption_date"/>
+                <field name="warehouse_id"/>
+                <field name="project_id"/>
+                <field name="task_id"/>
+                <field name="material_id"/>
+                <field name="quantity"/>
+                <field name="unit_of_measure"/>
+                <field name="consumed_by_id"/>
+                <field name="consumption_status" widget="badge" decoration-success="consumption_status == 'confirmed'" decoration-info="consumption_status == 'draft'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Project Warehouse - Simplified Tree -->
+    <record id="view_project_warehouse_tree_phase1" model="ir.ui.view">
+        <field name="name">project.warehouse.tree.phase1</field>
+        <field name="model">construction.project.warehouse</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree string="Project Warehouses">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="total_materials"/>
+                <field name="total_stock_value"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>
