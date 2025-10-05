@@ -71,6 +71,7 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '    --http-port="$HTTP_PORT" \' >> /start.sh && \
     echo '    --log-level=warn \' >> /start.sh && \
     echo '    --data-dir=/tmp/odoo \' >> /start.sh && \
+    echo '    --init=base \' >> /start.sh && \
     echo '    --proxy-mode \' >> /start.sh && \
     echo '    --without-demo=all \' >> /start.sh && \
     echo '    --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons' >> /start.sh && \
