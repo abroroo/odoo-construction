@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Construction Warehouse Management',
-    'version': '1.0.1',
+    'version': '1.0.2',
     'category': 'Inventory',
     'summary': 'Physical warehouse inventory management for construction projects',
     'description': """
@@ -40,6 +40,7 @@ flowing through project warehouses from suppliers to consumption.
         'project',
         'stock',
         'product',
+        'mail',
     ],
     'data': [
         'security/warehouse_security.xml',

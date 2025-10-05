@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 class MaterialConsumption(models.Model):
     _name = 'construction.material.consumption'
     _description = 'Material Consumption - Site Manager Takes Materials from Warehouse'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'consumption_date desc, id desc'
     _rec_name = 'display_name'
 
