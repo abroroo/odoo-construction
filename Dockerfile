@@ -66,7 +66,6 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '    --db_password="$DB_PASSWORD" \' >> /start.sh && \
     echo '    --database="$DB_NAME" \' >> /start.sh && \
     echo '    --http-port="$HTTP_PORT" \' >> /start.sh && \
-    echo '    --init=base \' >> /start.sh && \
     echo '    --proxy-mode \' >> /start.sh && \
     echo '    --without-demo=all \' >> /start.sh && \
     echo '    --workers=2 \' >> /start.sh && \
