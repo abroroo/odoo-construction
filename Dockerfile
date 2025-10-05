@@ -49,9 +49,8 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '' >> /start.sh && \
     echo 'HTTP_PORT="${PORT:-8080}"' >> /start.sh && \
     echo '' >> /start.sh && \
-    echo '# Force assets to be stored in database, not filestore' >> /start.sh && \
-    echo 'export ODOO_ASSETS_STORE_DB_ONLY=1' >> /start.sh && \
-    echo 'export ODOO_SESSION_REDIS=false' >> /start.sh && \
+    echo '# Disable filestore completely - store everything in DB' >> /start.sh && \
+    echo 'export IR_ATTACHMENT_LOCATION=db' >> /start.sh && \
     echo '' >> /start.sh && \
     echo 'echo "Configuration:"' >> /start.sh && \
     echo 'echo "  PGHOST env var: $PGHOST"' >> /start.sh && \
