@@ -8,6 +8,13 @@ class ConstructionMaterial(models.Model):
     _description = 'Construction Materials - Physical Goods'
     _order = 'category, name'
 
+    code = fields.Char(
+        string='Material Code',
+        required=False,
+        index=True,
+        copy=False,
+        help='Unique material code (e.g., from smeta)'
+    )
     name = fields.Char(
         string='Material Name',
         required=True,

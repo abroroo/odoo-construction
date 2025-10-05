@@ -141,6 +141,66 @@ class BatchMaterialWizard(models.TransientModel):
             'context': {},
         }
 
+    def _map_unit_to_selection(self, unit_text):
+        """Map Russian/text units to Odoo selection field values"""
+        # Normalize input
+        unit_text = unit_text.upper().strip()
+
+        # Unit mapping dictionary (Russian and English abbreviations)
+        unit_map = {
+            'М3': 'm3',
+            'M3': 'm3',
+            'КУБ.М': 'm3',
+            'КУБ': 'm3',
+            'М2': 'm2',
+            'M2': 'm2',
+            'КВ.М': 'm2',
+            'М': 'm',
+            'M': 'm',
+            'КГ': 'kg',
+            'KG': 'kg',
+            'Т': 'tons',
+            'T': 'tons',
+            'ТОНН': 'tons',
+            'ШТ': 'pcs',
+            'ПЦ': 'pcs',
+            'PCS': 'pcs',
+            'PIECES': 'pcs',
+            'ЧЕЛ-Ч': 'pcs',  # Man-hours -> pieces for now
+            'ЧЕЛ.Ч': 'pcs',
+            'Л': 'liters',
+            'L': 'liters',
+            'ЛИТР': 'liters',
+            'УП': 'boxes',
+            'УПАК': 'boxes',
+            'BOXES': 'boxes',
+            'МЕШОК': 'bags',
+            'МЕШ': 'bags',
+            'BAGS': 'bags',
+            'РУЛОН': 'rolls',
+            'РУЛ': 'rolls',
+            'ROLLS': 'rolls',
+            'ЛИСТ': 'sheets',
+            'SHEETS': 'sheets',
+            'КОМПЛ': 'sets',
+            'КОМПЛЕКТ': 'sets',
+            'SET': 'sets',
+            'SETS': 'sets',
+        }
+
+        # Try exact match first
+        if unit_text in unit_map:
+            return unit_map[unit_text]
+
+        # Try partial match
+        for key, value in unit_map.items():
+            if key in unit_text or unit_text in key:
+                return value
+
+        # Default to pieces if no match found
+        _logger.warning(f"Unknown unit '{unit_text}', defaulting to 'pcs'")
+        return 'pcs'
+
     def _parse_material_data(self, material_data):
         """Parse pipe-separated material data into structured format"""
         parsed_data = []
@@ -170,7 +230,7 @@ class BatchMaterialWizard(models.TransientModel):
 
             code = parts[0]
             name = parts[1]
-            unit = parts[2]
+            unit_text = parts[2]
             price_str = parts[3] if len(parts) > 3 else '0'
 
             # Validate material code
@@ -182,6 +242,9 @@ class BatchMaterialWizard(models.TransientModel):
             if not name:
                 errors.append(f"Line {line_num}: Material name cannot be empty")
                 continue
+
+            # Map unit to selection value
+            unit = self._map_unit_to_selection(unit_text)
 
             # Validate and convert price
             try:
@@ -196,6 +259,7 @@ class BatchMaterialWizard(models.TransientModel):
                 'code': code,
                 'name': name,
                 'unit': unit,
+                'unit_text': unit_text,  # Keep original for reference
                 'price': price,
                 'line_num': line_num,
             })
@@ -227,7 +291,7 @@ class BatchMaterialWizard(models.TransientModel):
                         existing.write({
                             'name': material_data['name'],
                             'unit_of_measure': material_data['unit'],
-                            'standard_price': material_data['price'],
+                            'standard_cost': material_data['price'],
                         })
                         created_materials.append(existing)
                         _logger.info(f"Updated existing material: {existing.name}")
@@ -238,7 +302,8 @@ class BatchMaterialWizard(models.TransientModel):
                     'code': material_data['code'],
                     'name': material_data['name'],
                     'unit_of_measure': material_data['unit'],
-                    'standard_price': material_data['price'],
+                    'standard_cost': material_data['price'],
+                    'category': 'other',  # Default category, user can change later
                     'active': True,
                 }
 

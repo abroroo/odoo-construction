@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Construction Warehouse Management',
-    'version': '1.0.0',
+    'version': '1.0.1',
     'category': 'Inventory',
     'summary': 'Physical warehouse inventory management for construction projects',
     'description': """
