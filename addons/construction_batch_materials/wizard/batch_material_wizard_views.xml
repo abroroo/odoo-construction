@@ -43,7 +43,7 @@
                         <!-- Step 3: Result -->
                         <group attrs="{'invisible': [('step', '!=', 'result')]}">
                             <group colspan="2">
-                                <h2>✓ Materials Created Successfully!</h2>
+                                <h2>Materials Created Successfully!</h2>
                                 <field name="result_message" nolabel="1" readonly="1"/>
                                 <field name="created_materials_count" readonly="1"/>
                                 <field name="skipped_count" readonly="1" attrs="{'invisible': [('skipped_count', '=', 0)]}"/>
@@ -54,7 +54,7 @@
 
                 <footer>
                     <!-- Step 1 buttons -->
-                    <button string="Parse & Preview"
+                    <button string="Parse &amp; Preview"
                             name="action_parse_and_preview"
                             type="object"
                             class="btn-primary"
