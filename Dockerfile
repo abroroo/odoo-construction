@@ -49,6 +49,9 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '' >> /start.sh && \
     echo 'HTTP_PORT="${PORT:-8080}"' >> /start.sh && \
     echo '' >> /start.sh && \
+    echo '# Enable assets debug mode to avoid filestore caching issues' >> /start.sh && \
+    echo 'export ODOO_ASSETS_DEBUG=1' >> /start.sh && \
+    echo '' >> /start.sh && \
     echo 'echo "Configuration:"' >> /start.sh && \
     echo 'echo "  PGHOST env var: $PGHOST"' >> /start.sh && \
     echo 'echo "  PGUSER env var: $PGUSER"' >> /start.sh && \
