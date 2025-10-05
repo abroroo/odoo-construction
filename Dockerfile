@@ -49,8 +49,8 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '' >> /start.sh && \
     echo 'HTTP_PORT="${PORT:-8080}"' >> /start.sh && \
     echo '' >> /start.sh && \
-    echo '# Enable assets debug mode to avoid filestore caching issues' >> /start.sh && \
-    echo 'export ODOO_ASSETS_DEBUG=1' >> /start.sh && \
+    echo '# Disable assets compression to avoid filestore issues' >> /start.sh && \
+    echo 'export ODOO_DISABLE_ASSETS_MINIFICATION=1' >> /start.sh && \
     echo '' >> /start.sh && \
     echo 'echo "Configuration:"' >> /start.sh && \
     echo 'echo "  PGHOST env var: $PGHOST"' >> /start.sh && \
@@ -69,8 +69,6 @@ RUN echo '#!/bin/bash' > /start.sh && \
     echo '    --db_password="$DB_PASSWORD" \' >> /start.sh && \
     echo '    --database="$DB_NAME" \' >> /start.sh && \
     echo '    --http-port="$HTTP_PORT" \' >> /start.sh && \
-    echo '    --dev=all \' >> /start.sh && \
-    echo '    --update=web,base \' >> /start.sh && \
     echo '    --proxy-mode \' >> /start.sh && \
     echo '    --without-demo=all \' >> /start.sh && \
     echo '    --workers=2 \' >> /start.sh && \
