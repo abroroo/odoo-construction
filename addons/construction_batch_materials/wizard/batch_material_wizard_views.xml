@@ -9,7 +9,7 @@
                 <group>
                     <group>
                         <!-- Step 1: Input -->
-                        <group attrs="{'invisible': [('step', '!=', 'input')]}">
+                        <group invisible="step != 'input'">
                             <field name="step" invisible="1"/>
                             <group colspan="2">
                                 <h2>Step 1: Paste Material Data</h2>
@@ -22,10 +22,10 @@
                         </group>
 
                         <!-- Step 2: Preview -->
-                        <group attrs="{'invisible': [('step', '!=', 'preview')]}">
+                        <group invisible="step != 'preview'">
                             <group colspan="2">
                                 <h2>Step 2: Preview Materials</h2>
-                                <field name="validation_errors" attrs="{'invisible': [('validation_errors', '=', False)]}" readonly="1"/>
+                                <field name="validation_errors" invisible="not validation_errors" readonly="1"/>
                             </group>
                             <group colspan="2">
                                 <field name="preview_lines" nolabel="1">
@@ -41,12 +41,12 @@
                         </group>
 
                         <!-- Step 3: Result -->
-                        <group attrs="{'invisible': [('step', '!=', 'result')]}">
+                        <group invisible="step != 'result'">
                             <group colspan="2">
                                 <h2>Materials Created Successfully!</h2>
                                 <field name="result_message" nolabel="1" readonly="1"/>
                                 <field name="created_materials_count" readonly="1"/>
-                                <field name="skipped_count" readonly="1" attrs="{'invisible': [('skipped_count', '=', 0)]}"/>
+                                <field name="skipped_count" readonly="1" invisible="skipped_count == 0"/>
                             </group>
                         </group>
                     </group>
@@ -58,28 +58,28 @@
                             name="action_parse_and_preview"
                             type="object"
                             class="btn-primary"
-                            attrs="{'invisible': [('step', '!=', 'input')]}"/>
-                    <button string="Cancel" special="cancel" attrs="{'invisible': [('step', '!=', 'input')]}"/>
+                            invisible="step != 'input'"/>
+                    <button string="Cancel" special="cancel" invisible="step != 'input'"/>
 
                     <!-- Step 2 buttons -->
                     <button string="Back"
                             name="action_previous_step"
                             type="object"
-                            attrs="{'invisible': [('step', '!=', 'preview')]}"/>
+                            invisible="step != 'preview'"/>
                     <button string="Create Materials"
                             name="action_create_materials"
                             type="object"
                             class="btn-primary"
-                            attrs="{'invisible': [('step', '!=', 'preview')]}"/>
-                    <button string="Cancel" special="cancel" attrs="{'invisible': [('step', '!=', 'preview')]}"/>
+                            invisible="step != 'preview'"/>
+                    <button string="Cancel" special="cancel" invisible="step != 'preview'"/>
 
                     <!-- Step 3 buttons -->
                     <button string="View Materials"
                             name="action_view_created_materials"
                             type="object"
                             class="btn-primary"
-                            attrs="{'invisible': [('step', '!=', 'result')]}"/>
-                    <button string="Close" special="cancel" attrs="{'invisible': [('step', '!=', 'result')]}"/>
+                            invisible="step != 'result'"/>
+                    <button string="Close" special="cancel" invisible="step != 'result'"/>
                 </footer>
             </form>
         </field>
