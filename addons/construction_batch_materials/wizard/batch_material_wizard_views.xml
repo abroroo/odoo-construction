@@ -96,7 +96,7 @@
     <!-- Menu item -->
     <menuitem id="menu_batch_material_wizard"
               name="Batch Import Materials"
-              parent="construction_warehouse.menu_construction_warehouse_root"
+              parent="construction_warehouse.menu_warehouse_root"
               action="action_batch_material_wizard"
               sequence="100"/>
 
