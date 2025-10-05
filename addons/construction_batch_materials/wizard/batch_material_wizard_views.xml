@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Batch Material Wizard Form View -->
+    <record id="view_batch_material_wizard_form" model="ir.ui.view">
+        <field name="name">construction.batch.material.wizard.form</field>
+        <field name="model">construction.batch.material.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Batch Create Materials">
+                <group>
+                    <group>
+                        <!-- Step 1: Input -->
+                        <group attrs="{'invisible': [('step', '!=', 'input')]}">
+                            <field name="step" invisible="1"/>
+                            <group colspan="2">
+                                <h2>Step 1: Paste Material Data</h2>
+                                <p>Format: Code|Name|Unit|Price (one per line)</p>
+                                <field name="material_data" nolabel="1" placeholder="00001|ЗАТРАТЫ ТРУДА|ЧЕЛ-Ч|24855.64&#10;06323|БЕТОН М-200|М3|450000.00"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="skip_duplicates"/>
+                            </group>
+                        </group>
+
+                        <!-- Step 2: Preview -->
+                        <group attrs="{'invisible': [('step', '!=', 'preview')]}">
+                            <group colspan="2">
+                                <h2>Step 2: Preview Materials</h2>
+                                <field name="validation_errors" attrs="{'invisible': [('validation_errors', '=', False)]}" readonly="1"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="preview_lines" nolabel="1">
+                                    <tree>
+                                        <field name="material_code"/>
+                                        <field name="material_name"/>
+                                        <field name="material_unit"/>
+                                        <field name="material_price"/>
+                                        <field name="is_duplicate" string="Duplicate?" widget="boolean_toggle"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+
+                        <!-- Step 3: Result -->
+                        <group attrs="{'invisible': [('step', '!=', 'result')]}">
+                            <group colspan="2">
+                                <h2>✓ Materials Created Successfully!</h2>
+                                <field name="result_message" nolabel="1" readonly="1"/>
+                                <field name="created_materials_count" readonly="1"/>
+                                <field name="skipped_count" readonly="1" attrs="{'invisible': [('skipped_count', '=', 0)]}"/>
+                            </group>
+                        </group>
+                    </group>
+                </group>
+
+                <footer>
+                    <!-- Step 1 buttons -->
+                    <button string="Parse & Preview"
+                            name="action_parse_and_preview"
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('step', '!=', 'input')]}"/>
+                    <button string="Cancel" special="cancel" attrs="{'invisible': [('step', '!=', 'input')]}"/>
+
+                    <!-- Step 2 buttons -->
+                    <button string="Back"
+                            name="action_previous_step"
+                            type="object"
+                            attrs="{'invisible': [('step', '!=', 'preview')]}"/>
+                    <button string="Create Materials"
+                            name="action_create_materials"
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('step', '!=', 'preview')]}"/>
+                    <button string="Cancel" special="cancel" attrs="{'invisible': [('step', '!=', 'preview')]}"/>
+
+                    <!-- Step 3 buttons -->
+                    <button string="View Materials"
+                            name="action_view_created_materials"
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('step', '!=', 'result')]}"/>
+                    <button string="Close" special="cancel" attrs="{'invisible': [('step', '!=', 'result')]}"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the wizard -->
+    <record id="action_batch_material_wizard" model="ir.actions.act_window">
+        <field name="name">Batch Create Materials</field>
+        <field name="res_model">construction.batch.material.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu item -->
+    <menuitem id="menu_batch_material_wizard"
+              name="Batch Import Materials"
+              parent="construction_warehouse.menu_construction_warehouse_root"
+              action="action_batch_material_wizard"
+              sequence="100"/>
+
+</odoo>
