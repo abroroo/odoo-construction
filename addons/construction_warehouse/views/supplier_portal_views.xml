@@ -1,62 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Supplier Portal - Quick Delivery Form -->
+    <!-- Supplier Portal - Phase 1 Minimal Delivery Form -->
     <record id="view_supplier_delivery_form" model="ir.ui.view">
         <field name="name">supplier.delivery.form</field>
         <field name="model">construction.material.receipt</field>
         <field name="arch" type="xml">
-            <form string="Deliver Material to Project">
+            <form string="Deliver Material">
                 <sheet>
                     <div class="oe_title">
-                        <h2>Deliver Material to Project Warehouse</h2>
-                        <p class="text-muted">Use this form to log materials delivered to construction project warehouses</p>
+                        <h2>Deliver Material to Project</h2>
                     </div>
 
                     <group>
-                        <group string="Delivery Information">
+                        <group string="Project &amp; Material">
                             <field name="warehouse_id" required="1" options="{'no_create': True}"/>
                             <field name="project_id" readonly="1"/>
-                            <field name="material_id" required="1"/>
-                            <field name="delivery_reference" placeholder="Delivery note number..."/>
+                            <field name="material_id" required="1" options="{'no_create': True}"/>
                         </group>
-                        <group string="Quantity &amp; Pricing">
+                        <group string="Delivery Details">
+                            <field name="delivery_reference" placeholder="Delivery note #"/>
                             <field name="quantity" required="1"/>
-                            <field name="unit_of_measure" readonly="1"/>
-                            <field name="unit_cost" required="1"/>
-                            <field name="total_cost" readonly="1"/>
+                            <field name="unit_cost" required="1" string="Price per Unit"/>
                         </group>
                     </group>
 
-                    <group>
-                        <group string="Supplier Details">
-                            <field name="supplier_id" readonly="1"/>
-                            <field name="supplier_contact" placeholder="Driver name or contact number..."/>
-                            <field name="delivery_truck" placeholder="Truck license plate..."/>
-                        </group>
-                        <group string="Delivery Status">
-                            <field name="receipt_date" required="1"/>
-                            <field name="receipt_status" readonly="1"/>
-                            <field name="quality_check" readonly="1"/>
-                        </group>
-                    </group>
-
-                    <group string="Material Condition">
-                        <field name="condition_notes" placeholder="Notes about material condition..."/>
-                        <field name="damaged_quantity" help="Enter any damaged quantity"/>
-                    </group>
-
-                    <group string="Storage Information">
-                        <field name="storage_location" placeholder="Where material was stored in warehouse..."/>
-                        <field name="storage_notes" placeholder="Special storage instructions..."/>
-                    </group>
-
-                    <group string="Additional Notes">
-                        <field name="receipt_notes" nolabel="1" placeholder="Any additional delivery notes..."/>
-                    </group>
+                    <!-- HIDDEN FIELDS - Auto-filled or not needed in Phase 1 -->
+                    <field name="unit_of_measure" invisible="1"/>
+                    <field name="total_cost" invisible="1"/>
+                    <field name="supplier_id" invisible="1"/>
+                    <field name="supplier_contact" invisible="1"/>
+                    <field name="delivery_truck" invisible="1"/>
+                    <field name="receipt_date" invisible="1"/>
+                    <field name="receipt_status" invisible="1"/>
+                    <field name="quality_check" invisible="1"/>
+                    <field name="condition_notes" invisible="1"/>
+                    <field name="damaged_quantity" invisible="1"/>
+                    <field name="storage_location" invisible="1"/>
+                    <field name="storage_notes" invisible="1"/>
+                    <field name="receipt_notes" invisible="1"/>
+                    <field name="received_by_id" invisible="1"/>
                 </sheet>
                 <footer>
                     <button name="action_mark_received" string="Confirm Delivery" type="object" class="btn-primary"/>
-                    <button string="Save as Draft" type="object" name="create" class="btn-secondary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

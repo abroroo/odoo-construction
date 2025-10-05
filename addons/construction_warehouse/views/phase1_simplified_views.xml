@@ -9,54 +9,41 @@
     =====================================================================
     -->
 
-    <!-- SUPPLIER DELIVERY - Phase 1 Simplified Form -->
+    <!-- SUPPLIER DELIVERY - Phase 1 Ultra-Minimal Form -->
     <record id="view_material_receipt_form_phase1" model="ir.ui.view">
         <field name="name">material.receipt.form.phase1</field>
         <field name="model">construction.material.receipt</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <form string="Supplier Delivery (Phase 1)">
+            <form string="Supplier Delivery">
                 <header>
                     <button name="action_mark_received"
-                            string="Mark as Received"
+                            string="Confirm Delivery"
                             type="object"
                             class="btn-primary"
                             invisible="receipt_status != 'draft'"/>
                     <field name="receipt_status" widget="statusbar" statusbar_visible="draft,received"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="display_name" readonly="1"/>
-                        </h1>
-                    </div>
-
                     <group>
-                        <group string="Delivery Information">
-                            <field name="warehouse_id" required="1"/>
-                            <field name="project_id" required="1" options="{'no_create': True}"/>
-                            <field name="material_id" required="1"/>
-                            <field name="delivery_reference" placeholder="Delivery note number"/>
-                            <field name="receipt_date" required="1"/>
+                        <group string="Project &amp; Material">
+                            <field name="warehouse_id" required="1" options="{'no_create': True}"/>
+                            <field name="project_id" readonly="1"/>
+                            <field name="material_id" required="1" options="{'no_create': True}"/>
                         </group>
-                        <group string="Quantity &amp; Price">
+                        <group string="Delivery Details">
+                            <field name="delivery_reference" placeholder="Delivery note #"/>
                             <field name="quantity" required="1"/>
-                            <field name="unit_of_measure" readonly="1"/>
-                            <field name="unit_cost" required="1"/>
-                            <field name="total_cost" readonly="1"/>
-                        </group>
-                    </group>
-
-                    <group>
-                        <group string="Supplier">
-                            <field name="supplier_id" required="1"/>
-                        </group>
-                        <group string="Received By">
-                            <field name="received_by_id" required="1"/>
+                            <field name="unit_cost" required="1" string="Price per Unit"/>
                         </group>
                     </group>
 
                     <!-- HIDDEN FIELDS - Available in database but not shown in Phase 1 -->
+                    <field name="unit_of_measure" invisible="1"/>
+                    <field name="total_cost" invisible="1"/>
+                    <field name="supplier_id" invisible="1"/>
+                    <field name="received_by_id" invisible="1"/>
+                    <field name="receipt_date" invisible="1"/>
                     <field name="supplier_contact" invisible="1"/>
                     <field name="delivery_truck" invisible="1"/>
                     <field name="purchase_order_ref" invisible="1"/>
@@ -67,11 +54,8 @@
                     <field name="storage_notes" invisible="1"/>
                     <field name="delivery_photos" invisible="1"/>
                     <field name="receipt_notes" invisible="1"/>
+                    <field name="display_name" invisible="1"/>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="message_ids"/>
-                </div>
             </form>
         </field>
     </record>
@@ -114,7 +98,6 @@
                         <group string="Consumption">
                             <field name="quantity" required="1"/>
                             <field name="consumed_by_id" required="1"/>
-                            <field name="consumption_date" required="1"/>
                         </group>
                         <group>
                             <!-- Empty group for layout -->
@@ -122,6 +105,7 @@
                     </group>
 
                     <!-- HIDDEN FIELDS - Available in database but not shown in Phase 1 -->
+                    <field name="consumption_date" invisible="1"/>
                     <field name="work_location" invisible="1"/>
                     <field name="consumption_purpose" invisible="1"/>
                     <field name="consumption_notes" invisible="1"/>
